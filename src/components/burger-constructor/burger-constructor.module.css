@@ -1,0 +1,28 @@
+.section {
+    /*border: 2px solid #4C4CFF;*/
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--offset-base-size)  * 4);
+    width: 100%;
+}
+.component{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    /*border: 1px dashed #4C4CFF;*/
+}
+.innerComponentsList{
+    height: calc(100vh - 595px);
+    min-height: 65px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--offset-base-size)  * 4);
+}
+
+.componentsInfo{
+ composes: component;
+ justify-content: flex-end;
+}

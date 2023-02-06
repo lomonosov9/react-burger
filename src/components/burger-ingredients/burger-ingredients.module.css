@@ -1,0 +1,23 @@
+.section {
+    /*border: 2px solid #4C4CFF;*/
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 100%;
+}
+
+.tabs {
+    display: flex;
+}
+
+.ingredients {
+    height: calc(100vh - 360px);
+    min-height: 300px;
+    overflow-y: scroll;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.heading2 {
+    width: 100%;
+}

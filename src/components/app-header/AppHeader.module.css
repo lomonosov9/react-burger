@@ -1,0 +1,41 @@
+.header {
+  background: var(--background);
+  /*border: 2px solid #4C4CFF;*/
+  min-width: 1060px;
+}
+.wrapper {
+  max-width: 1280px;
+  min-width: 1060px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: calc(var(--offset-base-size)  * 2);
+}
+.profile {
+  composes: nav;
+  justify-content: end;
+}
+
+.nav,
+.logo,
+.profile {
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  /*border: 1px dashed #4C4CFF;*/
+  border-radius: 40px;
+}
