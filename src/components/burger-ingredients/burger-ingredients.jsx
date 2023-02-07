@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './burger-ingredients.module.css';
 import BurgerItem from './burger-item/burger-item';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import ingredientType from '../../utils/prop-types';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -17,6 +18,33 @@ function BurgerIngredients({ data }) {
     { code: "sauce", title: "Соусы" },
     { code: "main", title: "Начинки" }
   ];
+
+  let ingredientsByType = new Map();
+  for (let type of ingredientTypesList) {
+    ingredientsByType.set(
+      type.code,
+      data.filter(item => (item.type === type.code))
+    );
+  }
+
+  const getIngredientsByType = (typeCode) => (
+    ingredientsByType
+      .get(typeCode)
+      .map(item => (
+        <BurgerItem
+          key = {item["_id"]}
+          _id = {item["_id"]}
+          name = {item.name}
+          price = {item.price}
+          image = {item.image}
+          type = {item.type}
+          count = {0}
+        />
+      ))
+  );
+
+
+
   return (
     <section className={styles.section}>
       <span className={headingClassName}>Соберите бургер</span>
@@ -32,54 +60,24 @@ function BurgerIngredients({ data }) {
       </div>
 
       <div className={styles.ingredients}>
-        
-        <span className={titleClassName}>Булки</span>
         {
-          data
-            .filter(item => (item.type === "bun"))
-            .map(item => (
-              <BurgerItem name={item.name} price={item.price} image={item.image} count={0} key={item["_id"]} />
-            ))
-        }
+          ingredientTypesList.map(type => (
+              <React.Fragment key={type.code} >
+                <span className={titleClassName}>{type.title}</span>
 
-        <span className={titleClassName}>Соусы</span>
-        {
-          data
-            .filter(item => (item.type === "sauce"))
-            .map(item => (
-              <BurgerItem name={item.name} price={item.price} image={item.image} count={0} key={item["_id"]}  />
-            ))
-        }
+                { getIngredientsByType(type.code) }
 
-        <span className={titleClassName}>Начинки</span>
-        {
-          data
-            .filter(item => (item.type === "main"))
-            .map(item => (
-              <BurgerItem name={item.name} price={item.price} image={item.image} count={0} key={item["_id"]}  />
-            ))
+              </React.Fragment>
+            )
+          )
         }
-
       </div>
     </section>
   );
 }
 
 BurgerIngredients.propTypes = {
-  data : PropTypes.arrayOf(PropTypes.shape({
-    "_id":PropTypes.string.isRequired,
-    "name":PropTypes.string.isRequired,
-    "type":PropTypes.oneOf(['bun', 'sauce', 'main']).isRequired,
-    "proteins":PropTypes.number,
-    "fat":PropTypes.number,
-    "carbohydrates":PropTypes.number,
-    "calories":PropTypes.number,
-    "price":PropTypes.number.isRequired,
-    "image":PropTypes.string.isRequired,
-    "image_mobile":PropTypes.string,
-    "image_large":PropTypes.string,
-    "__v":PropTypes.number
-  })).isRequired
+  data: PropTypes.arrayOf(ingredientType).isRequired
 }
 
 export default BurgerIngredients;
