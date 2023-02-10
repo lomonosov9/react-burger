@@ -5,14 +5,14 @@ import ingredientType from '../../../utils/prop-types';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-function BurgerItem({ _id, name, price, image, type, count}) {
+function BurgerItem({ _id, name, price, image, type, count, handleClick}) {
   let itemClassName = classNames(styles.item, 'ml-4 mt-6 mr-2 mb-4');
   let itemImgClassName = classNames(styles.itemImg, 'ml-4 mr-4');
   let itemPriceClassName = classNames(styles.itemPrice, 'text text_type_digits-default');
   let itemNameClassName = classNames(styles.itemName, 'text text_type_main-small');
 
   return (
-    <article className={itemClassName} >
+    <article className={itemClassName} onClick={() => handleClick(_id)}>
       <img 
         alt='' 
         src={image} 
@@ -33,7 +33,8 @@ function BurgerItem({ _id, name, price, image, type, count}) {
 
 BurgerItem.propTypes = {
   ingredientType,
-  count: PropTypes.number
+  count: PropTypes.number,
+  handleClick : PropTypes.func
 };
 
 

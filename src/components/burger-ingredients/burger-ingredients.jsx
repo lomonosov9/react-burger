@@ -5,9 +5,14 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientType from '../../utils/prop-types';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Modal from '../modal/modal';
+import IngredientDetails from './ingredient-details/ingredient-details';
+
 
 function BurgerIngredients({ data }) {
   const [current, setCurrent] = React.useState('bun');
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+  const [currentIngredient, setCurrentIngredient] = React.useState(null);
 
   let headingClassName = classNames('mt-10 mb-5 text text_type_main-large');
   let titleClassName = classNames(styles.heading2, 'mt-4 text text_type_main-medium');
@@ -27,23 +32,29 @@ function BurgerIngredients({ data }) {
     );
   }
 
+  const handleOpenModal = (id) => {
+    setModalIsOpen(true);
+    let current = data.filter(item => (item._id === id))[0];
+    setCurrentIngredient(current);
+  }
+
+  const handleCLoseModal = () => {
+    setModalIsOpen(false);
+    setCurrentIngredient(null);
+  }
+
   const getIngredientsByType = (typeCode) => (
     ingredientsByType
       .get(typeCode)
       .map(item => (
         <BurgerItem
+          {...item}
           key = {item["_id"]}
-          _id = {item["_id"]}
-          name = {item.name}
-          price = {item.price}
-          image = {item.image}
-          type = {item.type}
           count = {0}
+          handleClick = {handleOpenModal}
         />
       ))
   );
-
-
 
   return (
     <section className={styles.section}>
@@ -72,6 +83,15 @@ function BurgerIngredients({ data }) {
           )
         }
       </div>
+
+      { 
+        modalIsOpen       && 
+        currentIngredient &&
+        
+        <Modal isOpen={modalIsOpen} onClose={handleCLoseModal} header={'Детали ингредиента'}>
+          <IngredientDetails {...currentIngredient}/>
+        </Modal>
+      }
     </section>
   );
 }

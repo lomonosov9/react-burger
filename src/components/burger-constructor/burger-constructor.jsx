@@ -1,13 +1,25 @@
 import styles from './burger-constructor.module.css';
+import React from 'react';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import classNames from 'classnames';
+import Modal from '../modal/modal';
+import OrderDetails from './order-details/order-details';
 
 function BurgerConstructor() {
 
   let sectionClassName = classNames(styles.section, 'pt-25');
   let componentClassName = classNames(styles.component, 'ml-4 mr-4');
   let componentsInfoClassName = classNames(styles.componentsInfo, 'ml-4 mt-10 mr-4');
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+
+  const handleOpenModal = (id) => {
+    setModalIsOpen(true);
+  }
+
+  const handleCLoseModal = () => {
+    setModalIsOpen(false);
+  }
 
   return (
     <section className={sectionClassName}>
@@ -72,8 +84,17 @@ function BurgerConstructor() {
 
       <div className={componentsInfoClassName}>
         <span className='pr-10'><span className='pr-2 text text_type_digits-medium'>610</span><CurrencyIcon type="primary" /></span>
-        <Button htmlType="button" type="primary" size="large">Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="large" onClick = {handleOpenModal}>Оформить заказ</Button>
       </div>
+
+
+      { 
+        modalIsOpen && 
+        
+        <Modal isOpen={modalIsOpen} onClose={handleCLoseModal} header={''}>
+          <OrderDetails orderNumber={'034536'} />
+        </Modal>
+      }
     </section>
   );
 }
