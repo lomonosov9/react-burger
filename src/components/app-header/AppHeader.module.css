@@ -36,6 +36,6 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  /*border: 1px dashed #4C4CFF;*/
-  border-radius: 40px;
+  text-decoration: none;
+  color: var(--text-primary-color);
 }

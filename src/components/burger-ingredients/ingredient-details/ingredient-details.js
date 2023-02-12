@@ -4,12 +4,12 @@ import ingredientType from '../../../utils/prop-types';
 
 
 const IngredientDetails = (props) => {
-    let itemClassName = classNames(styles.item);
-    let itemImgClassName = classNames(styles.itemImg);
-    let itemNameClassName = classNames(styles.itemName, 'text text_type_main-medium');
-    let itemNutritionalClassName = classNames(styles.itemNutritional, 'mt-4 text');
-    let nutritionTitle = classNames('text text_type_main-default text_color_inactive pb-3');
-    let nutritionValue = classNames('text text_type_digits-default text_color_inactive');
+    const itemClassName = classNames(styles.item);
+    const itemImgClassName = classNames(styles.itemImg);
+    const itemNameClassName = classNames(styles.itemName, 'text text_type_main-medium');
+    const itemNutritionalClassName = classNames(styles.itemNutritional, 'mt-4 text');
+    const nutritionTitle = classNames('text text_type_main-default text_color_inactive pb-3');
+    const nutritionValue = classNames('text text_type_digits-default text_color_inactive');
     return (
         <article className={itemClassName} >
             <img

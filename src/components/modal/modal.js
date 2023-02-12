@@ -9,23 +9,21 @@ import PropTypes from 'prop-types';
 const rootPortal = document.getElementById("root-portal");
 
 const Modal = ({ children, header, onClose, isOpen }) => {
-    let modalClassName = classNames(styles.modal, 'pt-10 pr-10 pb-15 pl-10');
-    let modalWrapperClassName = classNames(styles.wrapper);
+    const modalClassName = classNames(styles.modal, 'pt-10 pr-10 pb-15 pl-10');
+    const modalWrapperClassName = classNames(styles.wrapper);
 
-    const handleEscKeyUp = React.useCallback((e) =>{
-        //console.log(e.keyCode);
-        if (isOpen && e.keyCode === 27){
-            onClose();
-        }
-      }, [isOpen, onClose]);
-    
-      React.useEffect(() => {
+    React.useEffect(() => {
+        const handleEscKeyUp = (e) => {
+            if (isOpen && e.keyCode === 27) {
+                onClose();
+            }
+        };
         document.addEventListener('keyup', handleEscKeyUp);
-        
+
         return (() => {
-          document.removeEventListener('keyup', handleEscKeyUp)
+            document.removeEventListener('keyup', handleEscKeyUp)
         });
-    }, [handleEscKeyUp]);
+    }, [isOpen, onClose]);
 
     if (!isOpen) return;
     return ReactDOM.createPortal(
@@ -41,9 +39,9 @@ const Modal = ({ children, header, onClose, isOpen }) => {
 }
 
 Modal.propTypes = {
-    children: PropTypes.node.isRequired , 
-    header: PropTypes.string , 
-    onClose: PropTypes.func.isRequired, 
+    children: PropTypes.node.isRequired,
+    header: PropTypes.string,
+    onClose: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired
 };
 

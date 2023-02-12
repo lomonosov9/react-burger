@@ -1,31 +1,20 @@
-import React, { useMemo } from 'react';
-import styles from './app.module.css'
+import React, { useEffect } from 'react';
+import styles from './app.module.css';
 import AppHeader from '../app-header/AppHeader';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients'
-import BurgerConstructor from '../burger-constructor/burger-constructor'
-//import dataStatic from '../../utils/data';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
+import {getIngredients} from '../../utils/burger-api'
 
 const App = () => {
-  const dataURL = 'https://norma.nomoreparties.space/api/ingredients';
   const [data, setData] = React.useState([]);
   const [hasError, setHasError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  const getAsyncData = useMemo(async () => {
-    try {
-      const res = await fetch(dataURL);
-      const resJSON = await res.json();
-      return resJSON.data;
-    }
-    catch (e) { throw Error(e); }
-  }, []);
-
-
-  React.useEffect(() => {
-    const getIngredients = async () => {
+  useEffect(() => {
+    const getIngredientsData = async () => {
       try {
-        const data = await getAsyncData;
-        setData(data);
+        const data = await getIngredients();
+        setData(data.data);
         setIsLoading(false);
       }
       catch (e) {
@@ -33,8 +22,8 @@ const App = () => {
       };
     };
 
-    getIngredients();
-  }, [getAsyncData]);
+    getIngredientsData();
+  }, []);
 
   return (
     <>

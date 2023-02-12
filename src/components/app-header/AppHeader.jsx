@@ -11,29 +11,28 @@ function AppHeader() {
       <div className={styles.wrapper}>
 
         <nav className={styles.nav}>
-          <div className={`${styles.navItem} pt-4 pr-5 pb-4 pl-5`}>
-            <BurgerIcon type="primary" />
-            <p className='text text_type_main-small ml-2'>
-              Конструктор
-            </p>
+          <div className={`pt-4 pr-5 pb-4 pl-5`}>
+            <a href="#" className={styles.navItem}>
+              <BurgerIcon type="primary" />
+              <span className='ml-2 text text_type_main-small'>Конструктор</span>
+            </a>
           </div>
-          <div className={`${styles.navItem} pt-4 pr-5 pb-4 pl-5`}>
-            <ListIcon type="secondary" />
-            <p className='text text_type_main-small text_color_inactive ml-2'>
-              Лента заказов
-            </p>
+          <div className={`pt-4 pr-5 pb-4 pl-5`}>
+            <a href="#" className={styles.navItem}>
+              <ListIcon type="secondary" />
+              <span className='ml-2 text text_type_main-small text_color_inactive'>Лента заказов</span>
+            </a>
           </div>
-
         </nav>
 
         <Logo className={styles.logo} />
 
         <div className={styles.profile}  >
-          <div className={`${styles.navItem} pt-4 pr-5 pb-4 pl-5`}>
+          <div className={`pt-4 pr-5 pb-4 pl-5`}>
+            <a href="#" className={styles.navItem}>
             <ProfileIcon type="secondary" />
-            <p className='text text_type_main-small text_color_inactive ml-2'>
-              Личный кабинет
-            </p>
+              <span className='ml-2 text text_type_main-small text_color_inactive'>Личный кабинет</span>
+            </a>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import BurgerItem from './burger-item/burger-item';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -14,27 +14,31 @@ function BurgerIngredients({ data }) {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
   const [currentIngredient, setCurrentIngredient] = React.useState(null);
 
-  let headingClassName = classNames('mt-10 mb-5 text text_type_main-large');
-  let titleClassName = classNames(styles.heading2, 'mt-4 text text_type_main-medium');
-  let tabsClassName = classNames(styles.tabs, 'mb-6');
+  const headingClassName = classNames('mt-10 mb-5 text text_type_main-large');
+  const titleClassName = classNames(styles.heading2, 'mt-4 text text_type_main-medium');
+  const tabsClassName = classNames(styles.tabs, 'mb-6');
 
-  let ingredientTypesList = [
+  const ingredientTypesList = useMemo( () => ([
     { code: "bun", title: "Булки" },
     { code: "sauce", title: "Соусы" },
     { code: "main", title: "Начинки" }
-  ];
+  ]),[]);
 
-  let ingredientsByType = new Map();
-  for (let type of ingredientTypesList) {
-    ingredientsByType.set(
-      type.code,
-      data.filter(item => (item.type === type.code))
-    );
-  }
+  const ingredientsByType = useMemo(() => {
+    const itemsByType = new Map();
+    for (const type of ingredientTypesList) {
+      itemsByType.set(
+        type.code,
+        data.filter(item => (item.type === type.code))
+      );
+    }
+    return itemsByType;
+  }, [ingredientTypesList, data]);
+
 
   const handleOpenModal = (id) => {
     setModalIsOpen(true);
-    let current = data.filter(item => (item._id === id))[0];
+    const current = data.filter(item => (item._id === id))[0];
     setCurrentIngredient(current);
   }
 
@@ -49,9 +53,9 @@ function BurgerIngredients({ data }) {
       .map(item => (
         <BurgerItem
           {...item}
-          key = {item["_id"]}
-          count = {0}
-          handleClick = {handleOpenModal}
+          key={item["_id"]}
+          count={0}
+          handleClick={handleOpenModal}
         />
       ))
   );
@@ -73,23 +77,23 @@ function BurgerIngredients({ data }) {
       <div className={styles.ingredients}>
         {
           ingredientTypesList.map(type => (
-              <React.Fragment key={type.code} >
-                <span className={titleClassName}>{type.title}</span>
+            <React.Fragment key={type.code} >
+              <span className={titleClassName}>{type.title}</span>
 
-                { getIngredientsByType(type.code) }
+              {getIngredientsByType(type.code)}
 
-              </React.Fragment>
-            )
+            </React.Fragment>
+          )
           )
         }
       </div>
 
-      { 
-        modalIsOpen       && 
+      {
+        modalIsOpen &&
         currentIngredient &&
-        
+
         <Modal isOpen={modalIsOpen} onClose={handleCLoseModal} header={'Детали ингредиента'}>
-          <IngredientDetails {...currentIngredient}/>
+          <IngredientDetails {...currentIngredient} />
         </Modal>
       }
     </section>

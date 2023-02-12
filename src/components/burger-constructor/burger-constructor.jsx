@@ -8,9 +8,9 @@ import OrderDetails from './order-details/order-details';
 
 function BurgerConstructor() {
 
-  let sectionClassName = classNames(styles.section, 'pt-25');
-  let componentClassName = classNames(styles.component, 'ml-4 mr-4');
-  let componentsInfoClassName = classNames(styles.componentsInfo, 'ml-4 mt-10 mr-4');
+  const sectionClassName = classNames(styles.section, 'pt-25');
+  const componentClassName = classNames(styles.component, 'ml-4 mr-4');
+  const componentsInfoClassName = classNames(styles.componentsInfo, 'ml-4 mt-10 mr-4');
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
   const handleOpenModal = (id) => {

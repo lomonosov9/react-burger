@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 const ModalHeader = ({ onClose, children }) => {
-    let headerClassName = classNames(styles.header);
-    let titleClassName = classNames('text text_type_main-large');
+    const headerClassName = classNames(styles.header);
+    const titleClassName = classNames('text text_type_main-large');
 
     return (
         <div className={headerClassName}>
