@@ -1,0 +1,27 @@
+.wrapper{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 99%;
+    height: 99%;
+    overflow: hidden;
+    /*border: 3px dashed red;*/
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal{
+    background: #1C1C21;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 720px;
+    border-radius: 40px;
+    z-index: 99;
+}

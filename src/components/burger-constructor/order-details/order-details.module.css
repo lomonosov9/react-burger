@@ -1,0 +1,8 @@
+.order {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+    width: 520px;
+    /*border: 1px dashed #4C4CFF;*/
+}
