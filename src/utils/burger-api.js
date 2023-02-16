@@ -7,6 +7,16 @@ async function getIngredients() {
 
 const checkReponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-  };
-  
- export {getIngredients};
+};
+
+async function getOrder(data) {
+    const res = await fetch(`${NORMA_API}/orders`,
+        {
+            method:  'POST',
+            headers: {'Content-Type': 'application/json'},
+            body:    JSON.stringify({"ingredients": data})
+        });
+    return checkReponse(res);
+}
+
+export { getIngredients, getOrder};

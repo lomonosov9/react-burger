@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import BurgerItem from './burger-item/burger-item';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientType from '../../utils/prop-types';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Modal from '../modal/modal';
 import IngredientDetails from './ingredient-details/ingredient-details';
+import { DataContext } from '../../services/data-context';
+/*import ingredientType from '../../utils/prop-types';
+import PropTypes from 'prop-types';*/
 
-
-function BurgerIngredients({ data }) {
+function BurgerIngredients() {
   const [current, setCurrent] = React.useState('bun');
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
   const [currentIngredient, setCurrentIngredient] = React.useState(null);
@@ -17,6 +17,8 @@ function BurgerIngredients({ data }) {
   const headingClassName = classNames('mt-10 mb-5 text text_type_main-large');
   const titleClassName = classNames(styles.heading2, 'mt-4 text text_type_main-medium');
   const tabsClassName = classNames(styles.tabs, 'mb-6');
+
+  const data = React.useContext(DataContext);
 
   const ingredientTypesList = useMemo( () => ([
     { code: "bun", title: "Булки" },
@@ -99,9 +101,9 @@ function BurgerIngredients({ data }) {
     </section>
   );
 }
-
+/*
 BurgerIngredients.propTypes = {
   data: PropTypes.arrayOf(ingredientType).isRequired
 }
-
+*/
 export default BurgerIngredients;

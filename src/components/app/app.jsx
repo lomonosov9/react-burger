@@ -3,7 +3,8 @@ import styles from './app.module.css';
 import AppHeader from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import {getIngredients} from '../../utils/burger-api'
+import { getIngredients } from '../../utils/burger-api'
+import { DataContext } from '../../services/data-context';
 
 const App = () => {
   const [data, setData] = React.useState([]);
@@ -38,8 +39,10 @@ const App = () => {
             !hasError &&
             data.length &&
             <>
-              <BurgerIngredients data={data}></BurgerIngredients>
-              <BurgerConstructor></BurgerConstructor>
+              <DataContext.Provider value={data}>
+                <BurgerIngredients></BurgerIngredients>
+                <BurgerConstructor></BurgerConstructor>
+              </DataContext.Provider>
             </>
           }
 
