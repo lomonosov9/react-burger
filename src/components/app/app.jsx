@@ -1,30 +1,27 @@
-import React, { useEffect } from 'react';
-import styles from './app.module.css';
-import AppHeader from '../app-header/AppHeader';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import styles            from './app.module.css';
+import AppHeader         from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { getIngredients } from '../../utils/burger-api'
-import { DataContext } from '../../services/data-context';
+import { DataContext }   from '../../services/data-context';
+import { dataSelector, requestSelector, failedSelector } from "../../services/selectors";
+import { getIngredientsData } from "../../services/thunks";
 
 const App = () => {
-  const [data, setData] = React.useState([]);
-  const [hasError, setHasError] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const dispatch = useDispatch();
+
+  const hasError  = useSelector(failedSelector);
+  const isLoading = useSelector(requestSelector);
+  const data      = useSelector(dataSelector);
 
   useEffect(() => {
-    const getIngredientsData = async () => {
-      try {
-        const data = await getIngredients();
-        setData(data.data);
-        setIsLoading(false);
-      }
-      catch (e) {
-        setHasError(true);
-      };
-    };
-
-    getIngredientsData();
-  }, []);
+     // Отправляем экшен-функцию
+     dispatch(getIngredientsData());
+  }, [dispatch]);
 
   return (
     <>
@@ -40,8 +37,10 @@ const App = () => {
             data.length &&
             <>
               <DataContext.Provider value={data}>
-                <BurgerIngredients></BurgerIngredients>
-                <BurgerConstructor></BurgerConstructor>
+                <DndProvider backend={HTML5Backend}>
+                  <BurgerIngredients />
+                  <BurgerConstructor />
+                </DndProvider>
               </DataContext.Provider>
             </>
           }

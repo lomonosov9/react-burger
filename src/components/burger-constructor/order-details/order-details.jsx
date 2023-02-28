@@ -1,9 +1,8 @@
 import styles from './order-details.module.css';
-//import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import checkedImgPath from '../../../images/checked-gradient.svg'
 
-const OrderDetails = ({orderNumber = '034536'}) => {
+const OrderDetails = ({orderNumber}) => {
     return (
         <article className={styles.order} >
             <p className='text text_type_digits-large mb-8'>

@@ -1,0 +1,8 @@
+.component{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    /*border: 1px dashed #4C4CFF;*/
+}

@@ -14,7 +14,8 @@
     /*border: 1px dashed #4C4CFF;*/
 }
 .innerComponentsList{
-    height: calc(100vh - 595px);
+    max-height: calc(100vh - 595px);
+    
     min-height: 65px;
     overflow-y: scroll;
     display: flex;
