@@ -1,4 +1,4 @@
-import { GET_ORDER, GET_ORDER_FAILED, GET_ORDER_SUCCESS, RESET_ORDER } from "../actionTypes";
+import { GET_ORDER, GET_ORDER_FAILED, GET_ORDER_SUCCESS, RESET_ORDER } from "../action-types";
 
 export const initialOrderState = {
     dataRequest: false,
@@ -40,7 +40,11 @@ export const order = (state = initialOrderState, action) => {
                 // выставляем соответсвующие значения в хранилище
                 dataFailed: true,
                 // Запрос закончил своё выполнение
-                dataRequest: false
+                dataRequest: false,
+                order: {
+                    name: '',
+                    number: 0
+                }
             };
         }
         case RESET_ORDER: {

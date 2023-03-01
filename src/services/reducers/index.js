@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
-import {data} from "./dataReducer";
-import {order} from "./orderReducer";
-import {constructor} from "./constructorReducer";
-import {current} from "./currentReducer";
+import {ingredients} from "./ingredients-reducer";
+import {order} from "./order-reducer";
+import {constructor} from "./constructor-reducer";
+import {current} from "./current-reducer";
 
 
 // Корневой редьюсер
 const rootReducer = combineReducers({
-    data,
+    ingredients,
     order,
     constructor,
     current

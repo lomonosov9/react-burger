@@ -1,13 +1,13 @@
-import { GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS } from "../actionTypes";
+import { GET_INGREDIENTS, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS } from "../action-types";
 
-export const initialDataState = {
+export const initialIngredientsState = {
     dataRequest: false,
     dataFailed: false,
-    data: []
+    ingredients: []
 }
-export const data = (state = initialDataState, action) => {
+export const ingredients = (state = initialIngredientsState, action) => {
     switch (action.type) {
-        case GET_DATA: {
+        case GET_INGREDIENTS: {
             return {
                 ...state,
                 // Запрос начал выполняться
@@ -17,23 +17,24 @@ export const data = (state = initialDataState, action) => {
                 dataFailed: false,
             };
         }
-        case GET_DATA_SUCCESS: {
+        case GET_INGREDIENTS_SUCCESS: {
             return {
                 ...state,
                 // Запрос выполнился успешно, помещаем полученные данные в хранилище
-                data: action.data,
+                ingredients: action.data,
                 // Запрос закончил своё выполнение
                 dataRequest: false
             };
         }
-        case GET_DATA_FAILED: {
+        case GET_INGREDIENTS_FAILED: {
             return {
                 ...state,
                 // Запрос выполнился с ошибкой, 
                 // выставляем соответсвующие значения в хранилище
                 dataFailed: true,
                 // Запрос закончил своё выполнение
-                dataRequest: false
+                dataRequest: false,
+                ingredients: []
             };
         }
         default: {

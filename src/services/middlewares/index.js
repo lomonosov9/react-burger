@@ -1,1 +1,1 @@
-export * from './customMiddleware'
+export * from './custom-middleware'

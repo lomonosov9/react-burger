@@ -1,7 +1,7 @@
-import { ADD_COMPONENT, DELETE_COMPONENT, RESET_COMPONENTS, UPDATE_FILLING_LIST } from "../actionTypes";
+import { ADD_COMPONENT, DELETE_COMPONENT, RESET_COMPONENTS, UPDATE_FILLING_LIST } from "../action-types";
 
 export const initialConstructorState = {
-    bun: {},
+    bun: null,
     filling: [],
     cost: 0
 }
@@ -23,7 +23,7 @@ export const constructor = (state = initialConstructorState, action) => {
                         ...state.filling,
                         action.data
                     ],
-                    cost: state.bun.price * 2 + state.filling?.reduce((acc, obj) => acc + obj.price, 0) + action.data.price
+                    cost: (state.bun ? state.bun.price : 0) * 2 + state.filling?.reduce((acc, obj) => acc + obj.price, 0) + action.data.price
                 }
             }
         }
@@ -31,7 +31,7 @@ export const constructor = (state = initialConstructorState, action) => {
             return {
                 ...state,
                 filling: [...state.filling.filter(item => item.dragId !== action.id)],
-                cost: state.bun.price * 2 + state.filling.filter(item => item.dragId !== action.id)?.reduce((acc, obj) => acc + obj.price, 0)
+                cost: state.bun?.price * 2 + state.filling.filter(item => item.dragId !== action.id)?.reduce((acc, obj) => acc + obj.price, 0)
             }
         }
         case UPDATE_FILLING_LIST: {

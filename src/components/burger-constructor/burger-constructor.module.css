@@ -15,8 +15,7 @@
 }
 .innerComponentsList{
     max-height: calc(100vh - 595px);
-    
-    min-height: 65px;
+    min-height: 165px;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;

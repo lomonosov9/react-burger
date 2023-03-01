@@ -2,10 +2,10 @@ import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose } from "redux";
 import rootReducer from "./reducers";
 import { customMiddleware } from "./middlewares";
-import {initialDataState} from "./reducers/dataReducer";
-import {initialOrderState} from "./reducers/orderReducer";
-import {initialConstructorState} from "./reducers/constructorReducer";
-import {initialCurrentState} from "./reducers/currentReducer";
+import {initialIngredientsState} from "./reducers/ingredients-reducer";
+import {initialOrderState} from "./reducers/order-reducer";
+import {initialConstructorState} from "./reducers/constructor-reducer";
+import {initialCurrentState} from "./reducers/current-reducer";
 
 export const configureStore = () => {
     const composeEnhancers =
@@ -16,7 +16,7 @@ export const configureStore = () => {
     const store = createStore(
         rootReducer,
         {
-            data: initialDataState,
+            ingredients: initialIngredientsState,
             order: initialOrderState,
             constructor: initialConstructorState,
             current: initialCurrentState

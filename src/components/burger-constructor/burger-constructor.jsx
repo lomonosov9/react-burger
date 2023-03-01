@@ -8,10 +8,10 @@ import styles from './burger-constructor.module.css';
 import classNames from 'classnames';
 import Modal from '../modal/modal';
 import OrderDetails from './order-details/order-details';
-import { orderSelector, orderRequestSelector, orderFailedSelector, dataSelector } from '../../services/selectors';
-import { bunSelector, costSelector } from '../../services/selectors';
+import { orderSelector, orderRequestSelector, orderFailedSelector, ingredientsSelector } from '../../services/selectors';
+import { bunSelector, fillingSelector, costSelector } from '../../services/selectors';
 import { getOrderInfo } from '../../services/thunks';
-import { actionCreators } from '../../services/actionCreators';
+import { constructorActionCreator, orderActionCreator } from '../../services/action-creators';
 import FillingList from './filling-list/filling-list';
 
 
@@ -22,28 +22,22 @@ function BurgerConstructor() {
   const componentsInfoClassName = classNames(styles.componentsInfo, 'ml-4 mt-10 mr-4');
 
   const dispatch = useDispatch();
-  const data = useSelector(dataSelector);
+  const data = useSelector(ingredientsSelector);
+  const filling = useSelector(fillingSelector);
   const order = useSelector(orderSelector);
   const hasError = useSelector(orderFailedSelector);
   const isLoading = useSelector(orderRequestSelector);
   const bun = useSelector(bunSelector);
-   const reduxCost = useSelector(costSelector);
-
-  const initBun = React.useMemo(() => data.filter(item => (item.type === 'bun'))[0], [data]);
-  React.useEffect(() => {
-    //onMount - загружать в пустой бургер булочку
-    if (!Object.keys(bun).length) {
-      dispatch(actionCreators.addComponent(initBun));
-    }
-  }, [bun, dispatch, initBun]);
+  const reduxCost = useSelector(costSelector);
 
   const handleOpenModal = React.useCallback(async () => {
-    dispatch(getOrderInfo(data.map(item => item._id)));
-  }, [data, dispatch]);
+    const componentsIds = [bun._id, ...filling.map(item=>item._id), bun._id];
+    dispatch(getOrderInfo(componentsIds));
+  }, [bun, filling, dispatch]);
 
   const handleCLoseModal = () => { 
-    dispatch(actionCreators.resetOrder());
-    dispatch(actionCreators.resetComponents());
+    dispatch(orderActionCreator.resetOrder());
+    dispatch(constructorActionCreator.resetComponents());
   }
 
   // drop
@@ -56,7 +50,7 @@ function BurgerConstructor() {
     }),
     drop(item) {
       dispatch(
-        actionCreators.addComponent({
+        constructorActionCreator.addComponent({
           ...item,
           // чтобы дублирующиеся ингредиенты в бургере не скакали при перетаскивании
           // так как реакт будет менять ингредиенты местами с учетом key
@@ -81,23 +75,8 @@ function BurgerConstructor() {
           />
         </div>
       }
-      <div className={styles.innerComponentsList}>
+      <div className={`${styles.innerComponentsList} custom-scroll`}>
         <FillingList />
-        {
-        
-        /*
-          filling?.map(item => (
-            <div className={componentClassName} key={item.dragId}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                handleClose = {() => handleItemDelete(item.dragId)}
-              />
-            </div>
-          ))*/
-        }
       </div>
 
       {bun &&
@@ -120,7 +99,7 @@ function BurgerConstructor() {
           <CurrencyIcon type="primary" />
         </span>
 
-        <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal} disabled={!bun ? true:false}>Оформить заказ</Button>
       </div>
 
       {

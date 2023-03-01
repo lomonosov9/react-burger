@@ -76,12 +76,12 @@ const FillingItemWrapper = ({ item, index, moveCard }) => {
     if (item.type !== 'bun') drag(drop(ref));
     // Прерываем базовую функция для onDrop
     // потому что браузер по умолчанию не сбрасывает наш элемент в контейнер
-    const preventDefault = (e) => e.preventDefault();
+    const handleDrop = (e) => e.preventDefault();
     return (
         <div
             ref={ref}
             style={{ opacity }}
-            onDrop={preventDefault}
+            onDrop={handleDrop}
             /*className={styles.wrapper}*/
             data-handler-id={handlerId}
         >
@@ -91,7 +91,7 @@ const FillingItemWrapper = ({ item, index, moveCard }) => {
 }
 
 FillingItemWrapper.propTypes = {
-    item: PropTypes.shape(ingredientType).isRequired, 
+    item: ingredientType.isRequired, 
     index: PropTypes.number.isRequired,
     moveCard: PropTypes.func.isRequired
 }

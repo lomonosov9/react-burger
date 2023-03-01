@@ -6,9 +6,9 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import classNames from 'classnames';
 import Modal from '../modal/modal';
 import IngredientDetails from './ingredient-details/ingredient-details';
-import { dataSelector, currentIngridientSelector } from '../../services/selectors';
+import { ingredientsSelector, currentIngridientSelector } from '../../services/selectors';
 import { bunSelector, fillingSelector } from '../../services/selectors';
-import { actionCreators } from '../../services/actionCreators';
+import { currentActionCreator } from '../../services/action-creators';
 
 
 
@@ -22,7 +22,7 @@ function BurgerIngredients() {
   const titleClassName = classNames(styles.heading2, 'mt-4 text text_type_main-medium');
   const tabsClassName = classNames(styles.tabs, 'mb-6');
 
-  const data = useSelector(dataSelector);
+  const data = useSelector(ingredientsSelector);
   const constructorBun = useSelector(bunSelector);
   const constructorfilling = useSelector(fillingSelector);
 
@@ -52,11 +52,11 @@ function BurgerIngredients() {
 
 
   const handleOpenModal = (item) => {
-    dispatch(actionCreators.setCurrentIngridient(item));
+    dispatch(currentActionCreator.setCurrentIngridient(item));
   }
 
   const handleCLoseModal = () => {
-    dispatch(actionCreators.resetCurrentIngridient());
+    dispatch(currentActionCreator.resetCurrentIngridient());
   }
 
   const getIngredientsByType = (typeCode) => (
@@ -119,7 +119,7 @@ function BurgerIngredients() {
         }
       </div>
 
-      <div className={styles.ingredients} ref={ingredientsContainerRef}>
+      <div className={`${styles.ingredients} custom-scroll`} ref={ingredientsContainerRef}>
         {
           ingredientTypesList.map(type => (
             <React.Fragment key={type.code} >

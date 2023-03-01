@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreators } from '../../../services/actionCreators';
+import { constructorActionCreator } from '../../../services/action-creators';
 import { fillingSelector} from '../../../services/selectors';
 import FillingItemWrapper from "./filling-item-wrapper/filling-item-wrapper";
 
@@ -26,7 +26,7 @@ const FillingList = () => {
         // Но для лучше понимания обновления массива,
         // Советую использовать стандартный splice
 
-        dispatch(actionCreators.updateFillingList(newCards))
+        dispatch(constructorActionCreator.updateFillingList(newCards))
     }, [filling, dispatch]);
 
     return (

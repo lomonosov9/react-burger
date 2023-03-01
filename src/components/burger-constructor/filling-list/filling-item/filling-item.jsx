@@ -1,9 +1,8 @@
 import { useDispatch } from "react-redux";
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { actionCreators } from '../../../../services/actionCreators';
+import { constructorActionCreator } from '../../../../services/action-creators';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './filling-item.module.css';
-import PropTypes from 'prop-types';
 import ingredientType from '../../../../utils/prop-types';
 
 import classNames from 'classnames';
@@ -13,7 +12,7 @@ const FillingItem = ({item}) => {
 
     const dispatch = useDispatch();
     const handleItemDelete = (id) => {
-        dispatch(actionCreators.deleteComponent(id))
+        dispatch(constructorActionCreator.deleteComponent(id))
     }
 
 return (
@@ -30,7 +29,7 @@ return (
 }
 
 FillingItem.propTypes = {
-  item: PropTypes.shape(ingredientType).isRequired
+  item: ingredientType.isRequired, 
 }
 
 export default FillingItem;

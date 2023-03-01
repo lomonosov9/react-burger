@@ -8,7 +8,7 @@ import AppHeader         from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { DataContext }   from '../../services/data-context';
-import { dataSelector, requestSelector, failedSelector } from "../../services/selectors";
+import { ingredientsSelector, requestSelector, failedSelector } from "../../services/selectors";
 import { getIngredientsData } from "../../services/thunks";
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
 
   const hasError  = useSelector(failedSelector);
   const isLoading = useSelector(requestSelector);
-  const data      = useSelector(dataSelector);
+  const data      = useSelector(ingredientsSelector);
 
   useEffect(() => {
      // Отправляем экшен-функцию

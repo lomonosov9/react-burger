@@ -1,4 +1,4 @@
-import { SET_CURRENT_INGRIDIENT, RESET_CURRENT_INGRIDIENT } from "../actionTypes";
+import { SET_CURRENT_INGRIDIENT, RESET_CURRENT_INGRIDIENT } from "../action-types";
 
 export const initialCurrentState = {
     ingridient: null
