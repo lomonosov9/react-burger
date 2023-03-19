@@ -1,12 +1,15 @@
 import styles from './order-details.module.css';
-import PropTypes from 'prop-types';
 import checkedImgPath from '../../../images/checked-gradient.svg'
+import { useSelector } from 'react-redux';
+import { orderSelector } from '../../../services/selectors';
 
-const OrderDetails = ({orderNumber}) => {
+const OrderDetails = () => {
+    const order = useSelector(orderSelector);
     return (
+        order?.number > 0 &&
         <article className={styles.order} >
             <p className='text text_type_digits-large mb-8'>
-                {orderNumber}
+                {order?.number}
             </p>
             <p className='text text_type_main-medium'>идентификатор заказа</p>
             <div className='mt-15 mb-15 pb-2' style={{height:120}}>
@@ -18,8 +21,5 @@ const OrderDetails = ({orderNumber}) => {
     );
 }
 
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number.isRequired
-}
 
 export default OrderDetails;

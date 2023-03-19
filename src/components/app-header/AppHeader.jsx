@@ -2,6 +2,7 @@ import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { NavLink } from 'react-router-dom'
 
 import styles from './AppHeader.module.css';
 
@@ -12,16 +13,36 @@ function AppHeader() {
 
         <nav className={styles.nav}>
           <div className={`pt-4 pr-5 pb-4 pl-5`}>
-            <a href="#" className={styles.navItem}>
-              <BurgerIcon type="primary" />
-              <span className='ml-2 text text_type_main-small'>Конструктор</span>
-            </a>
+            <NavLink
+              to='/'
+              className={({ isActive, isPending }) =>
+                isPending ? `text text_type_main-small ${styles.navItem}  ${styles.isNotActive}` :
+                  isActive ? `text text_type_main-small ${styles.navItem} ${styles.isActive} ` :
+                    `text text_type_main-small ${styles.navItem} ${styles.isNotActive} `
+              }
+            >
+              {
+                ({ isActive }) => (
+                  <>
+                    <BurgerIcon type={isActive ? "primary" : "secondary"} />
+                    <span className='ml-2 text text_type_main-small'>Конструктор</span>
+                  </>
+                )
+              }
+            </NavLink>
           </div>
           <div className={`pt-4 pr-5 pb-4 pl-5`}>
-            <a href="#" className={styles.navItem}>
+            <NavLink
+              to='/some'
+              className={({ isActive, isPending }) =>
+                isPending ? `text text_type_main-small  ${styles.navItem}  ${styles.isNotActive}` :
+                  isActive ? `text text_type_main-small ${styles.navItem} ${styles.isActive} ` :
+                    `text text_type_main-small  ${styles.navItem} ${styles.isNotActive} `
+              }
+            >
               <ListIcon type="secondary" />
               <span className='ml-2 text text_type_main-small text_color_inactive'>Лента заказов</span>
-            </a>
+            </NavLink>
           </div>
         </nav>
 
@@ -29,10 +50,23 @@ function AppHeader() {
 
         <div className={styles.profile}  >
           <div className={`pt-4 pr-5 pb-4 pl-5`}>
-            <a href="#" className={styles.navItem}>
-            <ProfileIcon type="secondary" />
-              <span className='ml-2 text text_type_main-small text_color_inactive'>Личный кабинет</span>
-            </a>
+            <NavLink
+              to='/profile'
+              className={({ isActive, isPending }) =>
+                isPending ? `text text_type_main-small ${styles.navItem}  ${styles.isNotActive}` :
+                  isActive ? `text text_type_main-small ${styles.navItem} ${styles.isActive} ` :
+                    `text text_type_main-small ${styles.navItem} ${styles.isNotActive} `
+              }
+            >
+              {
+                ({ isActive }) => (
+                  <>
+                    <ProfileIcon type={isActive ? "primary" : "secondary"} />
+                    <span className='ml-2'>Личный кабинет</span>
+                  </>
+                )
+              }
+            </NavLink>
           </div>
         </div>
 
