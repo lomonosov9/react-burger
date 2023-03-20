@@ -15,3 +15,8 @@
   .isNotActive{
     color: var(--text-inactive-color);
   }
+  .buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }

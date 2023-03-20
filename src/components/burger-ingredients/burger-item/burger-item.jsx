@@ -6,6 +6,8 @@ import ingredientType from '../../../utils/prop-types';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from "react-router-dom";
+import { routeReplacePathParams, ROUTES } from "../../../utils/routes";
+
 
 function BurgerItem({ item, count, handleClick }) {
   const { _id, name, price, image } = item;
@@ -36,6 +38,7 @@ function BurgerItem({ item, count, handleClick }) {
     })
   })
 
+  const pathToIngredient = routeReplacePathParams(ROUTES.INGREDIENT, {ingredientId: ingredientId});
   return (
 
     <Link
@@ -43,7 +46,7 @@ function BurgerItem({ item, count, handleClick }) {
       to={{
         // Тут мы формируем динамический путь для нашего ингредиента
         // а также сохраняем в свойство background роут, на котором была открыта наша модалка.
-        pathname: `/ingredients/${ingredientId}`
+        pathname:  pathToIngredient
       }}
       state={{ background: location }}
       className={styles.link}

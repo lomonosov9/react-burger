@@ -29,5 +29,5 @@ export function getCookie(name) {
   }
   
   export function deleteCookie(name) {
-    setCookie(name, null, { expires: -1 });
+    setCookie(name, null, { expires: -1 }, { path: '/' });
   }

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ROUTES } from "../utils/routes";
 import styles from './not-found.module.css';
 
 const NotFound404 = () => {
@@ -8,7 +9,7 @@ const NotFound404 = () => {
             <p className="text text_type_main-default mb-10">Такой страницы не существует.</p>
             <p className="text text_type_main-default mb-10">
                 Проверьте адрес или перейдите на 
-                <Link to='/'><span className="text text_type_main-default text_color_primary"> Главную</span></Link>
+                <Link to={ROUTES.CONSTRUCTOR}><span className="text text_type_main-default text_color_primary"> Главную</span></Link>
             </p>
         </div>
     );

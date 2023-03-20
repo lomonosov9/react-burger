@@ -13,7 +13,7 @@ const checkReponse = (res) => {
 
 const saveTokens = (refreshToken, accessToken) => {
   const authToken = accessToken.split('Bearer ')[1];
-  setCookie('token', authToken);
+  setCookie('token', authToken, { path: '/' });
   localStorage.setItem('refreshToken', refreshToken);
 }
 

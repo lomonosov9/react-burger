@@ -9,6 +9,7 @@ import {
 } from '../services/selectors';
 import { passwordRecoverData } from '../services/thunks';
 import styles from './forgot-password.module.css';
+import { ROUTES } from "../utils/routes";
 
 const ForgotPasswordPage = () => {
     const [form, setForm] = useState({ email: '' });
@@ -29,7 +30,7 @@ const ForgotPasswordPage = () => {
 
     return (
         <>
-            {   passwordRecoverSuccess && <Navigate to={'/reset-password'} />  }
+            {   passwordRecoverSuccess && <Navigate to={ ROUTES.RESET_PASSWORD } />  }
             {  !passwordRecoverSuccess &&
                 <div className={styles.wrapper}>
                     <h1 className='text text_type_main-medium mb-2'>Восстановление пароля {isLoading && '...'}</h1>
@@ -47,7 +48,7 @@ const ForgotPasswordPage = () => {
                     </form>
                     <div>
                         <span className="text text_type_main-default text_color_inactive">Вспомнили пароль? </span>
-                        <Link to='/login'><span className="text text_type_main-default">Войти</span></Link>
+                        <Link to={ROUTES.LOGIN}><span className="text text_type_main-default">Войти</span></Link>
                     </div>
                     <div>
                         {hasError &&

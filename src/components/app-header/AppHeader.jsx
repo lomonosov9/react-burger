@@ -2,7 +2,8 @@ import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import {ROUTES} from '../../utils/routes'
 
 import styles from './AppHeader.module.css';
 
@@ -14,7 +15,7 @@ function AppHeader() {
         <nav className={styles.nav}>
           <div className={`pt-4 pr-5 pb-4 pl-5`}>
             <NavLink
-              to='/'
+              to={ROUTES.CONSTRUCTOR} 
               className={({ isActive, isPending }) =>
                 isPending ? `text text_type_main-small ${styles.navItem}  ${styles.isNotActive}` :
                   isActive ? `text text_type_main-small ${styles.navItem} ${styles.isActive} ` :
@@ -46,12 +47,12 @@ function AppHeader() {
           </div>
         </nav>
 
-        <Logo className={styles.logo} />
+        <Link to='/' ><Logo className={styles.logo} /></Link>
 
         <div className={styles.profile}  >
           <div className={`pt-4 pr-5 pb-4 pl-5`}>
             <NavLink
-              to='/profile'
+              to={ROUTES.PROFILE}
               className={({ isActive, isPending }) =>
                 isPending ? `text text_type_main-small ${styles.navItem}  ${styles.isNotActive}` :
                   isActive ? `text text_type_main-small ${styles.navItem} ${styles.isActive} ` :

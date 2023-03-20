@@ -1,4 +1,5 @@
 import { NavLink, Outlet} from 'react-router-dom'
+import { ROUTES } from '../utils/routes';
 import styles from './profile.module.css';
 
 const ProfilePage = () => {
@@ -6,7 +7,7 @@ const ProfilePage = () => {
         <section className={`${styles.wrapper} mt-25`}>
             <div className={styles.navigation}>
                 <NavLink end
-                    to='/profile' 
+                    to={ROUTES.PROFILE} 
                     className={({ isActive, isPending }) =>
                         isPending ? `text text_type_main-medium pt-4 pb-4 ` :
                             isActive ? `text text_type_main-medium pt-4 pb-4 ${styles.isActive}` :
@@ -14,7 +15,7 @@ const ProfilePage = () => {
                     }
                 >Профиль</NavLink>
                 <NavLink
-                    to='/profile/orders'
+                    to={ROUTES.PROFILE_ORDERS}
                     className={({ isActive, isPending }) =>
                         isPending ? `text text_type_main-medium pt-4 pb-4 ` :
                             isActive ? `text text_type_main-medium pt-4 pb-4 ${styles.isActive}` :
@@ -22,7 +23,7 @@ const ProfilePage = () => {
                     }
                 >История заказов</NavLink>
                 <NavLink
-                    to='/profile/logout'
+                    to={ROUTES.PROFILE_LOGOUT}
                     className={({ isActive, isPending }) =>
                         isPending ? `text text_type_main-medium pt-4 pb-4 ` :
                             isActive ? `text text_type_main-medium pt-4 pb-4 ${styles.isActive}` :

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from 'react-router-dom'
-import { Button, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../services/selectors';
 import { passwordResetData } from '../services/thunks';
 import styles from './reset-password.module.css';
+import { ROUTES } from "../utils/routes";
 
 const ResetPasswordPage = () => {
     const [form, setForm] = useState({ password: '', token: '' });
@@ -31,7 +32,7 @@ const ResetPasswordPage = () => {
 
     return (
         <>
-            {(!passwordRecoverSuccess || passwordResetSuccess) && <Navigate to={'/login'} />}
+            {(!passwordRecoverSuccess || passwordResetSuccess) && <Navigate to={ROUTES.LOGIN} />}
             {!passwordResetSuccess &&
                 <div className={styles.wrapper}>
                     <h1 className='text text_type_main-medium mb-2'>Восстановление пароля {isLoading && '...'}</h1>
@@ -44,12 +45,11 @@ const ResetPasswordPage = () => {
                             extraClass="mb-2"
                             noValidate={true}
                         />
-                        <PasswordInput
+                        <Input
                             onChange={onChange}
                             value={form.token}
                             name={'token'}
                             placeholder="Введите код из письма"
-                            noValidate={true}
                             extraClass="mb-2"
                         />
                         <Button htmlType="submit" type="primary" size="large" extraClass={styles.button}>
@@ -58,7 +58,7 @@ const ResetPasswordPage = () => {
                     </form>
                     <div>
                         <span className="text text_type_main-default text_color_inactive">Вспомнили пароль? </span>
-                        <Link to='/login'><span className="text text_type_main-default">Войти</span></Link>
+                        <Link to={ROUTES.LOGIN}><span className="text text_type_main-default">Войти</span></Link>
                     </div>
                     <div>
                         {hasError &&

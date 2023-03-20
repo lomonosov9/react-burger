@@ -12,6 +12,8 @@ import { getOrderInfo } from '../../services/thunks';
 import { constructorActionCreator } from '../../services/action-creators';
 import FillingList from './filling-list/filling-list';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { routeReplacePathParams, ROUTES } from '../../utils/routes';
+
 
 
 function BurgerConstructor() {
@@ -39,7 +41,7 @@ function BurgerConstructor() {
 
   const handleOpenModal = async () => {
     if (!isAuthorized) {
-      navigate("/login", { state: { from: location } })
+      navigate(ROUTES.LOGIN, { state: { from: location } })
     }
     else {
       dispatchOrderInfo();
@@ -49,7 +51,8 @@ function BurgerConstructor() {
 
   useEffect(() => {
     if (order?.number > 0) {
-      navigate(`/profile/orders/${order.number}`, { state: { background: location } })
+      const orderLink = routeReplacePathParams(ROUTES.ORDER, {orderNumber: order.number});
+      navigate(orderLink, { state: { background: location } })
     }
     // eslint-disable-next-line
   }, [order]);

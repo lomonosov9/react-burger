@@ -6,6 +6,7 @@ import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-de
 import { userRequestSelector, userFailedSelector, isAuthorizedSelector, userErrorSelector } from '../services/selectors';
 import { registerUserData } from '../services/thunks';
 import styles from './register.module.css';
+import { ROUTES } from "../utils/routes";
 
 const RegisterPage = () => {
     const [form, setForm] = useState({name: '',  email: '',  password: ''});
@@ -64,7 +65,7 @@ const RegisterPage = () => {
                     </form>
                     <div>
                         <span className="text text_type_main-default text_color_inactive">Уже зарегистрированы? </span>
-                        <Link to='/login'><span className="text text_type_main-default">Войти</span></Link>
+                    <Link to={ROUTES.LOGIN}><span className="text text_type_main-default">Войти</span></Link>
                     </div>
                     <div>
                         {hasError &&

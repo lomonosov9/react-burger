@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Link } from 'react-router-dom'
@@ -7,6 +7,7 @@ import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer
 import { userRequestSelector, userFailedSelector, isAuthorizedSelector, userErrorSelector } from '../services/selectors';
 import { loginUserData } from '../services/thunks';
 import styles from './login.module.css';
+import { ROUTES } from "../utils/routes";
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: '', password: '' });
@@ -17,6 +18,7 @@ const LoginPage = () => {
     const isAuthorized = useSelector(isAuthorizedSelector);
 
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const onChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,11 +28,10 @@ const LoginPage = () => {
         e.preventDefault();
         dispatch(loginUserData(form));
     }
-
     return (
         <>
             {
-                isAuthorized && <Navigate to={'/profile'} />
+                isAuthorized && <Navigate to={location?.state?.from || ROUTES.CONSTRUCTOR} />
             }
             {!isAuthorized &&
                 <div className={styles.wrapper}>
@@ -57,11 +58,11 @@ const LoginPage = () => {
                     </form>
                     <div>
                         <span className="text text_type_main-default text_color_inactive">Вы — новый пользователь? </span>
-                        <Link to='/register'><span className="text text_type_main-default">Зарегистрироваться</span></Link>
+                        <Link to={ROUTES.REGISTER}><span className="text text_type_main-default">Зарегистрироваться</span></Link>
                     </div>
                     <div>
                         <span className="text text_type_main-default text_color_inactive">Забыли пароль? </span>
-                        <Link to='/forgot-password'><span className="text text_type_main-default">Восстановить пароль</span></Link>
+                        <Link to={ROUTES.FORGOT_PASSWORD}><span className="text text_type_main-default">Восстановить пароль</span></Link>
                     </div>
                     <div>
                         {hasError &&

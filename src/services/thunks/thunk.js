@@ -168,7 +168,7 @@ export const getUserData = () => {
                 const { user } = res;
                 dispatch(userActionCreator.setGetUserData(user));
             }
-            catch (e) {
+            catch(e) {
                 if (e?.message === 'jwt expired') {
                     dispatch(refreshToken(getUserData()));
                 }

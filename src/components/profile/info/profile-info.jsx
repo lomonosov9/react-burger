@@ -67,8 +67,8 @@ const ProfileInfo = () => {
                     icon={"ShowIcon"}
                     extraClass="mb-2"
                 />
-                {(form.name.length > 0 && form.email.length > 0 && form.password.length >= 6) &&
-                    <div>
+                {(form.name.length > 0 || form.email.length > 0 || form.password.length >= 6) &&
+                    <div className={styles.buttons}>
                         <Button htmlType="button" type="secondary" size="large" onClick={handleCancelClick}>
                             Отмена
                         </Button>

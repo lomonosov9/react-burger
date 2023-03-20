@@ -11,7 +11,6 @@ import RegisterPage from '../../pages/register';
 import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
-import LogoutPage from '../../pages/logout';
 import ProtectedRouteElement from '../protected-route';
 import IngredientsDetailsPage from '../../pages/ingredients-details';
 import { constructorActionCreator, currentActionCreator, orderActionCreator } from '../../services/action-creators';
@@ -23,6 +22,7 @@ import OrderDetails from '../burger-constructor/order-details/order-details';
 import ProfileInfo from '../profile/info/profile-info';
 import ProfileOrders from '../profile/orders/profile-orders';
 import ProfileLogout from '../profile/logout/profile-logout';
+import { ROUTES } from '../../utils/routes';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,8 @@ const App = () => {
     // Отправляем экшен-функцию
     dispatch(getIngredientsData());
     dispatch(checkUserAuth());
-  }, [dispatch]);
+    // eslint-disable-next-line
+  }, []);
 
   const ModalRouter = () => {
     const location = useLocation();
@@ -58,45 +59,45 @@ const App = () => {
           <div className={styles.wrapper}>
 
             <Routes location={background || location}>
-              <Route path="/" element={<Main />} />
-              <Route path="/login" element={
+              <Route path={ROUTES.CONSTRUCTOR} element={<Main />} />
+              <Route path={ROUTES.LOGIN} element={
                 <ProtectedRouteElement onlyUnAuth element={<LoginPage />} />
               } />
-              <Route path="/register" element={
+              <Route path={ROUTES.REGISTER} element={
                 <ProtectedRouteElement onlyUnAuth element={<RegisterPage />} />
               } />
-              <Route path="/forgot-password" element={
+              <Route path={ROUTES.FORGOT_PASSWORD} element={
                 <ProtectedRouteElement onlyUnAuth element={<ForgotPasswordPage />} />
               } />
-              <Route path="/reset-password" element={
+              <Route path={ROUTES.RESET_PASSWORD} element={
                 <ProtectedRouteElement onlyUnAuth element={<ResetPasswordPage />} />
               } />
 
-              <Route path="/profile" element={
+              <Route path={ROUTES.PROFILE} element={
                 <ProtectedRouteElement element={<ProfilePage />} />
               }>
-                  <Route path="/profile" element={<ProfileInfo />} />
-                  <Route path="/profile/orders" element={<ProfileOrders />} />
-                  <Route path="/profile/logout" element={<ProfileLogout />} />
+                  <Route path={ROUTES.PROFILE}        element={<ProfileInfo />} />
+                  <Route path={ROUTES.PROFILE_ORDERS} element={<ProfileOrders />} />
+                  <Route path={ROUTES.PROFILE_LOGOUT} element={<ProfileLogout />} />
                 </Route>
 
-              <Route path='/ingredients/:ingredientId' element={<IngredientsDetailsPage />} />
+              <Route path={ROUTES.INGREDIENT} element={<IngredientsDetailsPage />} />
               <Route path="*" element={<NotFound404 />} />
             </Routes>
 
             {background && (
               <Routes>
-                <Route path='/ingredients/:ingredientId'
+                <Route path={ROUTES.INGREDIENT}
                   element={
                     <Modal isOpen={currentIngredient ? true : false} onClose={handleCLoseIngredientsModal} header={'Детали ингредиента'}>
                       <IngredientDetails />
                     </Modal>
                   }
                 />
-                <Route path='/profile/orders/:orderNumber'
+                <Route path={ROUTES.ORDER}
                   element={
                     <ProtectedRouteElement element={
-                      <Modal isOpen={order?.number >0 ? true : false} onClose={handleCLosOrderModal} header={''}>
+                      <Modal isOpen={order?.number > 0 ? true : false} onClose={handleCLosOrderModal} header={''}>
                         <OrderDetails />
                       </Modal>
                     } />
