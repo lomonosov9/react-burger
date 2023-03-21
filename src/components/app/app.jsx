@@ -77,8 +77,9 @@ const App = () => {
                 <ProtectedRouteElement element={<ProfilePage />} />
               }>
                   <Route path={ROUTES.PROFILE}        element={<ProfileInfo />} />
-                  <Route path={ROUTES.PROFILE_ORDERS} element={<ProfileOrders />} />
                   <Route path={ROUTES.PROFILE_LOGOUT} element={<ProfileLogout />} />
+                  <Route path={ROUTES.PROFILE_ORDERS} element={<ProfileOrders />} />
+                  
                 </Route>
 
               <Route path={ROUTES.INGREDIENT} element={<IngredientsDetailsPage />} />

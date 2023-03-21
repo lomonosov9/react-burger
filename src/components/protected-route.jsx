@@ -10,7 +10,8 @@ const ProtectedRouteElement = ({ element, onlyUnAuth = false}) => {
   
     if (onlyUnAuth && isAuthorized) {
       const { from } = location.state || { from: { pathname: ROUTES.CONSTRUCTOR } };
-      return <Navigate to={from} />;
+      const navigateToPath = from === ROUTES.PROFILE_LOGOUT ? ROUTES.CONSTRUCTOR : from;
+      return <Navigate to={navigateToPath} />;
     }
   
     if (!onlyUnAuth && !isAuthorized) {

@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Link } from 'react-router-dom'
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userRequestSelector, userFailedSelector, isAuthorizedSelector, userErrorSelector } from '../services/selectors';
+import { userRequestSelector, userFailedSelector, userErrorSelector } from '../services/selectors';
 import { loginUserData } from '../services/thunks';
 import styles from './login.module.css';
 import { ROUTES } from "../utils/routes";
@@ -15,10 +14,8 @@ const LoginPage = () => {
     const isLoading = useSelector(userRequestSelector);
     const hasError = useSelector(userFailedSelector);
     const errorMessage = useSelector(userErrorSelector);
-    const isAuthorized = useSelector(isAuthorizedSelector);
 
     const dispatch = useDispatch();
-    const location = useLocation();
 
     const onChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,12 +25,8 @@ const LoginPage = () => {
         e.preventDefault();
         dispatch(loginUserData(form));
     }
+
     return (
-        <>
-            {
-                isAuthorized && <Navigate to={location?.state?.from || ROUTES.CONSTRUCTOR} />
-            }
-            {!isAuthorized &&
                 <div className={styles.wrapper}>
                     <h1 className='text text_type_main-medium mb-2'>Вход {isLoading && '...'}</h1>
                     <form onSubmit={handleSubmit}>
@@ -73,8 +66,6 @@ const LoginPage = () => {
                         }
                     </div>
                 </div>
-            }
-        </>
     );
 }
 
