@@ -4,9 +4,7 @@ import styles from './burger-ingredients.module.css';
 import BurgerItem from './burger-item/burger-item';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import classNames from 'classnames';
-import Modal from '../modal/modal';
-import IngredientDetails from './ingredient-details/ingredient-details';
-import { ingredientsSelector, currentIngridientSelector } from '../../services/selectors';
+import { ingredientsSelector } from '../../services/selectors';
 import { bunSelector, fillingSelector } from '../../services/selectors';
 import { currentActionCreator } from '../../services/action-creators';
 
@@ -15,7 +13,6 @@ import { currentActionCreator } from '../../services/action-creators';
 function BurgerIngredients() {
   const dispatch = useDispatch();
   const [currentType, setCurrentType] = React.useState('bun');
-  const currentIngredient = useSelector(currentIngridientSelector);
   const ingredientsContainerRef = useRef(null);
 
   const headingClassName = classNames('mt-10 mb-5 text text_type_main-large');
@@ -53,10 +50,6 @@ function BurgerIngredients() {
 
   const handleOpenModal = (item) => {
     dispatch(currentActionCreator.setCurrentIngridient(item));
-  }
-
-  const handleCLoseModal = () => {
-    dispatch(currentActionCreator.resetCurrentIngridient());
   }
 
   const getIngredientsByType = (typeCode) => (
@@ -132,14 +125,6 @@ function BurgerIngredients() {
           )
         }
       </div>
-
-      {
-        currentIngredient &&
-
-        <Modal isOpen={currentIngredient ? true : false} onClose={handleCLoseModal} header={'Детали ингредиента'}>
-          <IngredientDetails {...currentIngredient} />
-        </Modal>
-      }
     </section>
   );
 }

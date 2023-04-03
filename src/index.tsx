@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {Main} from './main';
+import {MainApp} from './main-app';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Main />
+    <MainApp />
   </React.StrictMode>
 );
 

@@ -39,3 +39,10 @@
   text-decoration: none;
   color: var(--text-primary-color);
 }
+
+.isActive{
+  color: var(--text-primary-color);
+}
+.isNotActive{
+  color: var(--text-inactive-color);
+}

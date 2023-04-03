@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
 import uuid from 'react-uuid';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import {  CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import classNames from 'classnames';
-import Modal from '../modal/modal';
-import OrderDetails from './order-details/order-details';
-import { orderSelector, orderRequestSelector, orderFailedSelector, ingredientsSelector } from '../../services/selectors';
+import { orderSelector, orderRequestSelector, orderFailedSelector, isAuthorizedSelector } from '../../services/selectors';
 import { bunSelector, fillingSelector, costSelector } from '../../services/selectors';
 import { getOrderInfo } from '../../services/thunks';
-import { constructorActionCreator, orderActionCreator } from '../../services/action-creators';
+import { constructorActionCreator } from '../../services/action-creators';
 import FillingList from './filling-list/filling-list';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { routeReplacePathParams, ROUTES } from '../../utils/routes';
+
 
 
 function BurgerConstructor() {
@@ -22,23 +23,39 @@ function BurgerConstructor() {
   const componentsInfoClassName = classNames(styles.componentsInfo, 'ml-4 mt-10 mr-4');
 
   const dispatch = useDispatch();
-  const data = useSelector(ingredientsSelector);
   const filling = useSelector(fillingSelector);
   const order = useSelector(orderSelector);
   const hasError = useSelector(orderFailedSelector);
   const isLoading = useSelector(orderRequestSelector);
   const bun = useSelector(bunSelector);
   const reduxCost = useSelector(costSelector);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isAuthorized = useSelector(isAuthorizedSelector);
 
-  const handleOpenModal = React.useCallback(async () => {
-    const componentsIds = [bun._id, ...filling.map(item=>item._id), bun._id];
+  const dispatchOrderInfo = React.useCallback(async () => {
+    const componentsIds = [bun._id, ...filling.map(item => item._id), bun._id];
     dispatch(getOrderInfo(componentsIds));
+
   }, [bun, filling, dispatch]);
 
-  const handleCLoseModal = () => { 
-    dispatch(orderActionCreator.resetOrder());
-    dispatch(constructorActionCreator.resetComponents());
+  const handleOpenModal = async () => {
+    if (!isAuthorized) {
+      navigate(ROUTES.LOGIN, { state: { from: location } })
+    }
+    else {
+      dispatchOrderInfo();
+    }
   }
+
+
+  useEffect(() => {
+    if (order?.number > 0) {
+      const orderLink = routeReplacePathParams(ROUTES.ORDER, {orderNumber: order.number});
+      navigate(orderLink, { state: { background: location } })
+    }
+    // eslint-disable-next-line
+  }, [order]);
 
   // drop
   // Получаем реф, который мы пробросим в наш контейнер
@@ -63,58 +80,64 @@ function BurgerConstructor() {
 
   return (
     <section className={sectionClassName} ref={dropTargerRef} /* className={`${isHover ? styles.onHover : ''}`}*/ >
-      {bun &&
-        <div className={componentClassName}>
-          <span style={{ width: 24 }} />
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
+      {isLoading &&
+        <div>
+          <p className="text text_type_main-default">Ожидайте, ваш заказ оформляется... </p>
         </div>
       }
-      <div className={`${styles.innerComponentsList} custom-scroll`}>
-        <FillingList />
-      </div>
-
-      {bun &&
-        <div className={componentClassName}>
-          <span style={{ width: 24 }} />
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
-        </div>
-      }
-      <div className={componentsInfoClassName}>
-        <span className='pr-10'>
-          <span className='pr-2 text text_type_digits-medium'>
-            {reduxCost}
-          </span>
-          <CurrencyIcon type="primary" />
-        </span>
-
-        <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal} disabled={!bun ? true:false}>Оформить заказ</Button>
-      </div>
-
       {
-        !hasError && !isLoading && order?.number>0 &&
-        
-        <Modal isOpen={!hasError && !isLoading && order?.number>0 ? true:false} onClose={handleCLoseModal} header={''}>
-          <OrderDetails orderNumber={order?.number} />
-        </Modal>
-      }
-      {
-        hasError &&
+        <>
+          {!isLoading &&
+            <>
+              {bun &&
+                <div className={componentClassName}>
+                  <span style={{ width: 24 }} />
+                  <ConstructorElement
+                    type="top"
+                    isLocked={true}
+                    text={`${bun.name} (верх)`}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                  />
+                </div>
+              }
+              <div className={`${styles.innerComponentsList} custom-scroll`}>
+                <FillingList />
+              </div>
 
-        <Modal isOpen={hasError ? true:false} onClose={handleCLoseModal} header={''}>
-          <p className='text text_type_main-small'>Произошла ошибка.</p>
-        </Modal>
+              {bun &&
+                <div className={componentClassName}>
+                  <span style={{ width: 24 }} />
+                  <ConstructorElement
+                    type="bottom"
+                    isLocked={true}
+                    text={`${bun.name} (низ)`}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                  />
+                </div>
+              }
+            </>
+          }
+
+
+          <div className={componentsInfoClassName}>
+            <span className='pr-10'>
+              <span className='pr-2 text text_type_digits-medium'>
+                {reduxCost}
+              </span>
+              <CurrencyIcon type="primary" />
+            </span>
+
+            <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal} disabled={(!bun || isLoading) ? true : false}>Оформить заказ</Button>
+          </div>
+
+          {hasError &&
+            <div>
+              <p className="text text_type_main-default text_color_error">Произошла ошибка. </p>
+            </div>
+          }
+        </>
       }
     </section>
   );
