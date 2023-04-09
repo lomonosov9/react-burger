@@ -1,5 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -8,15 +7,13 @@ import BurgerIngredients from '../../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../../burger-constructor/burger-constructor';
 import styles from './main.module.css';
 
-const Main = () => {
+const Main: React.FC = () => {
     const hasError = useSelector(failedSelector);
     const isLoading = useSelector(requestSelector);
     const data = useSelector(ingredientsSelector);
 
     return (
         <div className={styles.wrapper}>
-            {/*<Outlet />*/}
-
             {isLoading && 'Загрузка...'}
             {hasError && 'Произошла ошибка'}
             {!isLoading &&

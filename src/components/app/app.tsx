@@ -28,12 +28,12 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     // Отправляем экшен-функцию
-    dispatch(getIngredientsData());
-    dispatch(checkUserAuth());
+    dispatch<any>(getIngredientsData());
+    dispatch<any>(checkUserAuth());
     // eslint-disable-next-line
   }, []);
 
-  const ModalRouter = () => {
+  const ModalRouter: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     let background = location.state && location.state.background;

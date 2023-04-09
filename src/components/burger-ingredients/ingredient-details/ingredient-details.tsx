@@ -1,11 +1,10 @@
 import styles from './ingredient-details.module.css';
 import classNames from 'classnames';
-import ingredientType from '../../../utils/prop-types';
 import { currentIngridientSelector } from '../../../services/selectors';
 import { useSelector } from 'react-redux';
 
 
-const IngredientDetails = () => {
+const IngredientDetails: React.FC = () => {
     const currentItem = useSelector(currentIngridientSelector);
 
     const itemClassName = classNames(styles.item);
@@ -16,7 +15,8 @@ const IngredientDetails = () => {
     const nutritionValue = classNames('text text_type_digits-default text_color_inactive');
 
 
-    return (
+    return (<>
+        {currentItem &&
             <article className={itemClassName} >
                 <img
                     alt=''
@@ -45,11 +45,9 @@ const IngredientDetails = () => {
                         <p className={nutritionValue}> {currentItem.carbohydrates}</p>
                     </li>
                 </ul>
-
             </article>
+        }
+    </>
     );
 }
-
-IngredientDetails.propTypes = { ingredientType };
-
 export default IngredientDetails;

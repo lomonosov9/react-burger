@@ -3,8 +3,12 @@ import { useLocation, Navigate } from "react-router-dom";
 import { isAuthorizedSelector} from '../services/selectors';
 import { ROUTES } from "../utils/routes";
 
+type ProtectedRouteElementProps = {
+  element: JSX.Element;
+  onlyUnAuth?: boolean;
+}
 
-const ProtectedRouteElement = ({ element, onlyUnAuth = false}) => {
+const ProtectedRouteElement: React.FC<ProtectedRouteElementProps> = ({ element, onlyUnAuth = false}) => {
     const isAuthorized = useSelector(isAuthorizedSelector);
     const location = useLocation();
   

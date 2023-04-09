@@ -1,13 +1,24 @@
 import React from 'react';
 import { useDrag, useDrop } from "react-dnd";
+import type { Identifier, XYCoord } from 'dnd-core';
 import FillingItem from "../filling-item/filling-item";
-import PropTypes from 'prop-types';
-import ingredientType from '../../../../utils/prop-types';
+import { TIngredient } from '../../../../utils/types';
 
+type FillingItemWrapperProps = {
+    item: TIngredient & { dragId: string };
+    index: number;
+    moveCard(dragIndex: number, hoverIndex: number): void;
+}
 
-const FillingItemWrapper = ({ item, index, moveCard }) => {
-    const ref = React.useRef(null);
-    const [{ handlerId }, drop] = useDrop({
+type TDragItem = {
+    index: number
+    id: string
+    type: string
+};
+
+const FillingItemWrapper: React.FC<FillingItemWrapperProps> = ({ item, index, moveCard }) => {
+    const ref = React.useRef<HTMLDivElement>(null);
+    const [{ handlerId }, drop] = useDrop<TDragItem, void, { handlerId: Identifier | null }>({
         // Указываем тип получаемых элементов, чтобы dnd понимал,
         // в какой контейнер можно класть перетаскиваемый элемент, а в какой нельзя.
         // Элементы и контейнеры с разными типами не будут взаимодействовать
@@ -24,7 +35,7 @@ const FillingItemWrapper = ({ item, index, moveCard }) => {
                 return;
             }
             // Переопределяем индексы ингредиентов для удобства
-            const dragIndex = item.index;
+            const dragIndex: number = item.index;
             const hoverIndex = index;
             // Ничего не делаем, если ингредиент находится 
             if (dragIndex === hoverIndex) {
@@ -41,7 +52,7 @@ const FillingItemWrapper = ({ item, index, moveCard }) => {
             const clientOffset = monitor.getClientOffset();
             // Вычисляем координаты курсора и координаты середины карточки
             // на которую мы навели наш перетаскиваемый ингредиент
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
             // Условие для перетаскивании элементов сверху вниз
             // Если перетаскиваемый ингредиент пересекает середину
             // текущего ингредиента, то мы идем дальше и выполняем moveCard
@@ -64,7 +75,7 @@ const FillingItemWrapper = ({ item, index, moveCard }) => {
     // ингредиентов заказа
     const [{ isDragging }, drag] = useDrag({
         type: 'component',
-        item: () => ({ id: item.id, index }),
+        item: () => ({ id: item._id, index }),
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -76,7 +87,7 @@ const FillingItemWrapper = ({ item, index, moveCard }) => {
     if (item.type !== 'bun') drag(drop(ref));
     // Прерываем базовую функция для onDrop
     // потому что браузер по умолчанию не сбрасывает наш элемент в контейнер
-    const handleDrop = (e) => e.preventDefault();
+    const handleDrop = (e: React.DragEvent) => e.preventDefault();
     return (
         <div
             ref={ref}
@@ -85,15 +96,9 @@ const FillingItemWrapper = ({ item, index, moveCard }) => {
             /*className={styles.wrapper}*/
             data-handler-id={handlerId}
         >
-            <FillingItem item={item}/>
+            <FillingItem item={item} />
         </div>
     )
-}
-
-FillingItemWrapper.propTypes = {
-    item: ingredientType.isRequired, 
-    index: PropTypes.number.isRequired,
-    moveCard: PropTypes.func.isRequired
 }
 
 export default FillingItemWrapper;

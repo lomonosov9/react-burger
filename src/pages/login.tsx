@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userRequestSelector, userFailedSelector, userErrorSelector } from '../services/selectors';
 import { loginUserData } from '../services/thunks';
@@ -17,13 +16,13 @@ const LoginPage = () => {
 
     const dispatch = useDispatch();
 
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(loginUserData(form));
+        dispatch<any>(loginUserData(form));
     }
 
     return (

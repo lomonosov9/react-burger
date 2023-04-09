@@ -1,17 +1,10 @@
 import { setCookie, getCookie, deleteCookie } from "./cookies";
+import { RequestCredentialsUpdate, RequestDataToken, RequestIngredients, RequestLogout, RequestOrder, RequestUser, RequestUserAuth } from "./types";
 
 const NORMA_API = 'https://norma.nomoreparties.space/api';
 
-async function getIngredients() {
-  const res = await fetch(`${NORMA_API}/ingredients`);
-  return checkReponse(res);
-}
 
-const checkReponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
-
-const saveTokens = (refreshToken, accessToken) => {
+const saveTokens = (refreshToken: string, accessToken: string) => {
   const authToken = accessToken.split('Bearer ')[1];
   setCookie('token', authToken, { path: '/' });
   localStorage.setItem('refreshToken', refreshToken);
@@ -22,7 +15,16 @@ const deleteTokens = () => {
   localStorage.removeItem('refreshToken');
 }
 
-async function getOrder(data) {
+const checkReponse = (res: Response) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
+
+async function getIngredients(): Promise<RequestIngredients> {
+  const res = await fetch(`${NORMA_API}/ingredients`);
+  return checkReponse(res);
+}
+
+async function getOrder(data: string[]): Promise<RequestOrder> {
   const res = await fetch(`${NORMA_API}/orders`,
     {
       method: 'POST',
@@ -35,7 +37,7 @@ async function getOrder(data) {
   return checkReponse(res);
 }
 
-const loginRequest = async (form) => {
+const loginRequest = async (form: { email: string, password: string }): Promise<RequestUserAuth> => {
   const res = await fetch(`${NORMA_API}/auth/login`, {
     method: 'POST',
     mode: 'cors',
@@ -51,7 +53,7 @@ const loginRequest = async (form) => {
   return checkReponse(res);
 };
 
-const registerRequest = async (form) => {
+const registerRequest = async (form: {name: string,  email: string,  password: string}): Promise<RequestUserAuth> => {
   const res = await fetch(`${NORMA_API}/auth/register`, {
     method: 'POST',
     mode: 'cors',
@@ -67,7 +69,7 @@ const registerRequest = async (form) => {
   return checkReponse(res);
 };
 
-const passwordRecoverRequest = async (form) => {
+const passwordRecoverRequest = async (form: { email: string }): Promise<RequestCredentialsUpdate> => {
   const res = await fetch(`${NORMA_API}/password-reset`, {
     method: 'POST',
     mode: 'cors',
@@ -83,7 +85,7 @@ const passwordRecoverRequest = async (form) => {
   return checkReponse(res);
 };
 
-const passwordResetRequest = async (form) => {
+const passwordResetRequest = async (form: { password: string, token: string }): Promise<RequestCredentialsUpdate> => {
   const res = await fetch(`${NORMA_API}/password-reset/reset`, {
     method: 'POST',
     mode: 'cors',
@@ -99,7 +101,7 @@ const passwordResetRequest = async (form) => {
   return checkReponse(res);
 };
 
-export const getUserRequest = async () => {
+export const getUserRequest = async (): Promise<RequestUser> => {
   const res = await fetch(`${NORMA_API}/auth/user`, {
     method: 'GET',
     mode: 'cors',
@@ -115,7 +117,7 @@ export const getUserRequest = async () => {
   return checkReponse(res);
 }
 
-const updateUserRequest = async (form) => {
+const updateUserRequest = async (form:{ name: string, email: string, password: string }) : Promise<RequestUser> => {
   const res = await fetch(`${NORMA_API}/auth/user`, {
     method: 'PATCH',
     mode: 'cors',
@@ -132,7 +134,7 @@ const updateUserRequest = async (form) => {
   return checkReponse(res);
 };
 
-const refreshTokenRequest = async () => {
+const refreshTokenRequest = async (): Promise<RequestDataToken> => {
   const res = await fetch(`${NORMA_API}/auth/token`, {
     method: 'POST',
     mode: 'cors',
@@ -148,7 +150,7 @@ const refreshTokenRequest = async () => {
   return checkReponse(res);
 };
 
-const logoutRequest = async () => {
+const logoutRequest = async (): Promise<RequestLogout> => {
   const res = await fetch(`${NORMA_API}/auth/logout`, {
     method: 'POST',
     mode: 'cors',

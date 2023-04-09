@@ -18,13 +18,13 @@ const RegisterPage = () => {
 
     const dispatch = useDispatch();
 
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(registerUserData(form));
+        dispatch<any>(registerUserData(form));
     }
 
     return (

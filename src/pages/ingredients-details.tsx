@@ -6,19 +6,20 @@ import { currentActionCreator } from '../services/action-creators';
 import styles from './ingredients-details.module.css';
 import IngredientDetails from "../components/burger-ingredients/ingredient-details/ingredient-details";
 import { getIngredientsData } from "../services/thunks";
+import { TIngredient } from "../utils/types";
 
 const IngredientsDetailsPage = () => {
     const { ingredientId } = useParams();
-    const data = useSelector(ingredientsSelector);
+    const data = useSelector(ingredientsSelector)  as TIngredient[];
     const currentItem = useSelector(currentIngridientSelector);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!data) {
-            dispatch(getIngredientsData());
+            dispatch<any>(getIngredientsData());
         }
         if (data) {
-            dispatch(currentActionCreator.setCurrentIngridient(
+            dispatch<any>(currentActionCreator.setCurrentIngridient(
                 data.find(element => element._id === ingredientId)));
         }
     }, [data, ingredientId, dispatch]);

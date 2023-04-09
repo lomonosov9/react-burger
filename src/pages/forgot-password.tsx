@@ -1,59 +1,49 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom'
-import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom'
+import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
-    passwordResetRequestSelector, passwordResetSuccessSelector,
-    passwordResetFailedSelector, passwordResetErrorSelector,
-    passwordRecoverSuccessSelector
+    passwordRecoverRequestSelector, passwordRecoverSuccessSelector,
+    passwordRecoverFailedSelector, passwordRecoverErrorSelector
 } from '../services/selectors';
-import { passwordResetData } from '../services/thunks';
-import styles from './reset-password.module.css';
+import { passwordRecoverData } from '../services/thunks';
+import styles from './forgot-password.module.css';
 import { ROUTES } from "../utils/routes";
 
-const ResetPasswordPage = () => {
-    const [form, setForm] = useState({ password: '', token: '' });
+const ForgotPasswordPage = () => {
+    const [form, setForm] = useState({ email: '' });
     const dispatch = useDispatch();
-    const isLoading = useSelector(passwordResetRequestSelector);
-    const hasError = useSelector(passwordResetFailedSelector);
-    const errorMessage = useSelector(passwordResetErrorSelector);
-    const passwordResetSuccess = useSelector(passwordResetSuccessSelector);
+    const isLoading = useSelector(passwordRecoverRequestSelector);
+    const hasError = useSelector(passwordRecoverFailedSelector);
+    const errorMessage = useSelector(passwordRecoverErrorSelector);
     const passwordRecoverSuccess = useSelector(passwordRecoverSuccessSelector);
 
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(passwordResetData(form));
+        dispatch<any>(passwordRecoverData(form));
     }
 
     return (
         <>
-            {(!passwordRecoverSuccess || passwordResetSuccess) && <Navigate to={ROUTES.LOGIN} />}
-            {!passwordResetSuccess &&
+            {   passwordRecoverSuccess && <Navigate to={ ROUTES.RESET_PASSWORD } />  }
+            {  !passwordRecoverSuccess &&
                 <div className={styles.wrapper}>
                     <h1 className='text text_type_main-medium mb-2'>Восстановление пароля {isLoading && '...'}</h1>
                     <form onSubmit={handleSubmit}>
-                        <PasswordInput
+                        <EmailInput
                             onChange={onChange}
-                            value={form.password}
-                            name={'password'}
-                            placeholder={"Введите новый пароль"}
-                            extraClass="mb-2"
-                            noValidate={true}
-                        />
-                        <Input
-                            onChange={onChange}
-                            value={form.token}
-                            name={'token'}
-                            placeholder="Введите код из письма"
+                            value={form.email}
+                            name={'email'}
+                            placeholder="Укажите e-mail"
                             extraClass="mb-2"
                         />
                         <Button htmlType="submit" type="primary" size="large" extraClass={styles.button}>
-                            Сохранить
+                            Восстановить
                         </Button>
                     </form>
                     <div>
@@ -74,4 +64,4 @@ const ResetPasswordPage = () => {
     );
 }
 
-export default ResetPasswordPage;
+export default ForgotPasswordPage;
