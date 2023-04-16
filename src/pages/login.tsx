@@ -6,21 +6,18 @@ import { userRequestSelector, userFailedSelector, userErrorSelector } from '../s
 import { loginUserData } from '../services/thunks';
 import styles from './login.module.css';
 import { ROUTES } from "../utils/routes";
+import { useForm } from "../hooks/useForm";
 
 const LoginPage = () => {
-    const [form, setForm] = useState({ email: '', password: '' });
+    const {form, handleChange} = useForm({ email: '', password: '' });
 
-    const isLoading = useSelector(userRequestSelector);
-    const hasError = useSelector(userFailedSelector);
+    const isLoading    = useSelector(userRequestSelector);
+    const hasError     = useSelector(userFailedSelector);
     const errorMessage = useSelector(userErrorSelector);
 
     const dispatch = useDispatch();
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
-
-    const handleSubmit = async(e: React.FormEvent) => {
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch<any>(loginUserData(form));
     }
@@ -30,15 +27,15 @@ const LoginPage = () => {
                     <h1 className='text text_type_main-medium mb-2'>Вход {isLoading && '...'}</h1>
                     <form onSubmit={handleSubmit}>
                         <EmailInput
-                            onChange={onChange}
-                            value={form.email}
+                            onChange={handleChange}
+                            value={form?.email || ''}
                             name={'email'}
                             placeholder="E-mail"
                             extraClass="mb-2"
                         />
                         <PasswordInput
-                            onChange={onChange}
-                            value={form.password}
+                            onChange={handleChange}
+                            value={form?.password || ''}
                             name={'password'}
                             placeholder={"Пароль"}
                             extraClass="mb-2"

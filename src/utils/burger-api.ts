@@ -1,174 +1,153 @@
 import { setCookie, getCookie, deleteCookie } from "./cookies";
-import { RequestCredentialsUpdate, RequestDataToken, RequestIngredients, RequestLogout, RequestOrder, RequestUser, RequestUserAuth } from "./types";
+import { RequestCredentialsUpdate, RequestDB, RequestDataToken, RequestIngredients, RequestLogout, RequestOrder, RequestUser, RequestUserAuth, TUserForm } from "./types";
 
-const NORMA_API = 'https://norma.nomoreparties.space/api';
+const NORMA_API = 'https://norma.nomoreparties.space/api/';
 
-
-const saveTokens = (refreshToken: string, accessToken: string) => {
+export const saveTokens = (refreshToken: string, accessToken: string) => {
   const authToken = accessToken.split('Bearer ')[1];
   setCookie('token', authToken, { path: '/' });
   localStorage.setItem('refreshToken', refreshToken);
 }
 
-const deleteTokens = () => {
+export const deleteTokens = () => {
   deleteCookie('token');
   localStorage.removeItem('refreshToken');
 }
 
-const checkReponse = (res: Response) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const checkResponse = <T>(res: Response): Promise<T>  => {
+  if (res.ok) {
+    return res.json() as Promise<T>;
+  }
+  return Promise.reject({ message: `Ошибка ${res.status} ${res.statusText}` });
 };
 
-async function getIngredients(): Promise<RequestIngredients> {
-  const res = await fetch(`${NORMA_API}/ingredients`);
-  return checkReponse(res);
-}
+type checkSuccessProps<T> = RequestDB & T;
+const checkSuccess = <T>(res: checkSuccessProps<T>): T | Promise<T> => {
+  if (res && res?.success) {
+    return res;
+  }
+  return Promise.reject(`Ответ не success: ${res}`);
+};
 
-async function getOrder(data: string[]): Promise<RequestOrder> {
-  const res = await fetch(`${NORMA_API}/orders`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + getCookie('token')
-      },
-      body: JSON.stringify({ "ingredients": data })
-    });
-  return checkReponse(res);
-}
+const request = <T>(endpoint: string, options?: RequestInit | undefined): Promise<T> => {
+  return fetch(`${NORMA_API}${endpoint}`, options)
+    .then(checkResponse<T>);
+    //.then(checkSuccess<T>);
+};
 
-const loginRequest = async (form: { email: string, password: string }): Promise<RequestUserAuth> => {
-  const res = await fetch(`${NORMA_API}/auth/login`, {
+export const getIngredients = (): Promise<RequestIngredients> => request("ingredients");
+
+export const getOrder = (data: string[]): Promise<RequestOrder> => request(`orders`,
+  {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset = utf-8'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  });
-  return checkReponse(res);
-};
-
-const registerRequest = async (form: {name: string,  email: string,  password: string}): Promise<RequestUserAuth> => {
-  const res = await fetch(`${NORMA_API}/auth/register`, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset = utf-8'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  });
-  return checkReponse(res);
-};
-
-const passwordRecoverRequest = async (form: { email: string }): Promise<RequestCredentialsUpdate> => {
-  const res = await fetch(`${NORMA_API}/password-reset`, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset = utf-8'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  });
-  return checkReponse(res);
-};
-
-const passwordResetRequest = async (form: { password: string, token: string }): Promise<RequestCredentialsUpdate> => {
-  const res = await fetch(`${NORMA_API}/password-reset/reset`, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset = utf-8'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  });
-  return checkReponse(res);
-};
-
-export const getUserRequest = async (): Promise<RequestUser> => {
-  const res = await fetch(`${NORMA_API}/auth/user`, {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset = utf-8',
-      'Authorization': 'Bearer ' + getCookie('token')
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
-  });
-  return checkReponse(res);
-}
-
-const updateUserRequest = async (form:{ name: string, email: string, password: string }) : Promise<RequestUser> => {
-  const res = await fetch(`${NORMA_API}/auth/user`, {
-    method: 'PATCH',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset = utf-8',
-      'Authorization': 'Bearer ' + getCookie('token')
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(form)
-  });
-  return checkReponse(res);
-};
-
-const refreshTokenRequest = async (): Promise<RequestDataToken> => {
-  const res = await fetch(`${NORMA_API}/auth/token`, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getCookie('token')
     },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify({ token: localStorage.getItem('refreshToken') })
+    body: JSON.stringify({ "ingredients": data })
   });
-  return checkReponse(res);
-};
 
-const logoutRequest = async (): Promise<RequestLogout> => {
-  const res = await fetch(`${NORMA_API}/auth/logout`, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify({ token: localStorage.getItem('refreshToken') })
-  });
-  return checkReponse(res);
-};
+export const loginRequest = (form: TUserForm): Promise<RequestUserAuth> => request(`auth/login`, {
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json; charset = utf-8'
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  body: JSON.stringify(form)
+});
 
-export {
-  getIngredients, getOrder, loginRequest, registerRequest,
-  updateUserRequest, refreshTokenRequest, logoutRequest,
-  saveTokens, deleteTokens,
-  passwordRecoverRequest, passwordResetRequest
-};
+export const registerRequest = (form: TUserForm): Promise<RequestUserAuth> => request(`auth/register`, {
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json; charset = utf-8'
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  body: JSON.stringify(form)
+});
+
+export const passwordRecoverRequest = (form: TUserForm): Promise<RequestCredentialsUpdate> => request(`password-reset`, {
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json; charset = utf-8'
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  body: JSON.stringify(form)
+});
+
+export const passwordResetRequest = (form: TUserForm): Promise<RequestCredentialsUpdate> => request(`password-reset/reset`, {
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json; charset = utf-8'
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  body: JSON.stringify(form)
+});
+
+export const getUserRequest = (): Promise<RequestUser> => request(`auth/user`, {
+  method: 'GET',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json; charset = utf-8',
+    'Authorization': 'Bearer ' + getCookie('token')
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer'
+});
+
+export const updateUserRequest = (form: TUserForm): Promise<RequestUser> => request(`auth/user`, {
+  method: 'PATCH',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json; charset = utf-8',
+    'Authorization': 'Bearer ' + getCookie('token')
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  body: JSON.stringify(form)
+});
+
+export const refreshTokenRequest = (): Promise<RequestDataToken> => request(`auth/token`, {
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  body: JSON.stringify({ token: localStorage.getItem('refreshToken') })
+});
+
+export const logoutRequest = (): Promise<RequestLogout> => request(`auth/logout`, {
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  body: JSON.stringify({ token: localStorage.getItem('refreshToken') })
+});

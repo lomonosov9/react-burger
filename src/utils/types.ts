@@ -15,6 +15,13 @@ export type TIngredient = {
   __v?: number
 };
 
+export type TUserForm = {
+  email?: string, 
+  password?: string,
+  name?: string,
+  token?: string
+}
+
 export type RequestDB = {
   success: boolean;
 }

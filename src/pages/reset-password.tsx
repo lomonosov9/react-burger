@@ -11,21 +11,19 @@ import {
 import { passwordResetData } from '../services/thunks';
 import styles from './reset-password.module.css';
 import { ROUTES } from "../utils/routes";
+import { useForm } from "../hooks/useForm";
 
 const ResetPasswordPage = () => {
-    const [form, setForm] = useState({ password: '', token: '' });
-    const dispatch = useDispatch();
-    const isLoading = useSelector(passwordResetRequestSelector);
-    const hasError = useSelector(passwordResetFailedSelector);
-    const errorMessage = useSelector(passwordResetErrorSelector);
-    const passwordResetSuccess = useSelector(passwordResetSuccessSelector);
+    const {form, handleChange} = useForm({ password: '', token: '' });
+
+    const dispatch               = useDispatch();
+    const isLoading              = useSelector(passwordResetRequestSelector);
+    const hasError               = useSelector(passwordResetFailedSelector);
+    const errorMessage           = useSelector(passwordResetErrorSelector);
+    const passwordResetSuccess   = useSelector(passwordResetSuccessSelector);
     const passwordRecoverSuccess = useSelector(passwordRecoverSuccessSelector);
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch<any>(passwordResetData(form));
     }
@@ -38,16 +36,16 @@ const ResetPasswordPage = () => {
                     <h1 className='text text_type_main-medium mb-2'>Восстановление пароля {isLoading && '...'}</h1>
                     <form onSubmit={handleSubmit}>
                         <PasswordInput
-                            onChange={onChange}
-                            value={form.password}
+                            onChange={handleChange}
+                            value={form?.password || ''}
                             name={'password'}
                             placeholder={"Введите новый пароль"}
                             extraClass="mb-2"
                             noValidate={true}
                         />
                         <Input
-                            onChange={onChange}
-                            value={form.token}
+                            onChange={handleChange}
+                            value={form?.token || ''}
                             name={'token'}
                             placeholder="Введите код из письма"
                             extraClass="mb-2"
