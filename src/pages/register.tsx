@@ -7,9 +7,10 @@ import { userRequestSelector, userFailedSelector, isAuthorizedSelector, userErro
 import { registerUserData } from '../services/thunks';
 import styles from './register.module.css';
 import { ROUTES } from "../utils/routes";
+import { useForm } from "../hooks/useForm";
 
 const RegisterPage = () => {
-    const [form, setForm] = useState({name: '',  email: '',  password: ''});
+    const {form, handleChange} = useForm({name: '',  email: '',  password: ''});
 
     const isLoading    = useSelector(userRequestSelector);
     const hasError     = useSelector(userFailedSelector);
@@ -18,13 +19,9 @@ const RegisterPage = () => {
 
     const dispatch = useDispatch();
 
-    const onChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(registerUserData(form));
+        dispatch<any>(registerUserData(form));
     }
 
     return (
@@ -38,22 +35,22 @@ const RegisterPage = () => {
                     <form onSubmit={handleSubmit}>
                         <Input
                             type="text"
-                            onChange={onChange}
-                            value={form.name}
+                            onChange={handleChange}
+                            value={form?.name || ''}
                             name={'name'}
                             placeholder="Имя"
                             extraClass="mb-2"
                         />
                         <EmailInput
-                            onChange={onChange}
-                            value={form.email}
+                            onChange={handleChange}
+                            value={form?.email || ''}
                             name={'email'}
                             placeholder="E-mail"    
                             extraClass="mb-2"
                         />
                         <PasswordInput
-                            onChange={onChange}
-                            value={form.password}
+                            onChange={handleChange}
+                            value={form?.password || ''}
                             name={'password'}
                             placeholder={"Пароль"}
                             extraClass="mb-2"

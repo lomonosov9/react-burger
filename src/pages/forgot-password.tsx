@@ -10,22 +10,20 @@ import {
 import { passwordRecoverData } from '../services/thunks';
 import styles from './forgot-password.module.css';
 import { ROUTES } from "../utils/routes";
+import { useForm } from "../hooks/useForm";
 
 const ForgotPasswordPage = () => {
-    const [form, setForm] = useState({ email: '' });
+    const {form, handleChange} = useForm({ email: '' });
+
     const dispatch = useDispatch();
     const isLoading = useSelector(passwordRecoverRequestSelector);
     const hasError = useSelector(passwordRecoverFailedSelector);
     const errorMessage = useSelector(passwordRecoverErrorSelector);
     const passwordRecoverSuccess = useSelector(passwordRecoverSuccessSelector);
 
-    const onChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(passwordRecoverData(form));
+        dispatch<any>(passwordRecoverData(form));
     }
 
     return (
@@ -36,8 +34,8 @@ const ForgotPasswordPage = () => {
                     <h1 className='text text_type_main-medium mb-2'>Восстановление пароля {isLoading && '...'}</h1>
                     <form onSubmit={handleSubmit}>
                         <EmailInput
-                            onChange={onChange}
-                            value={form.email}
+                            onChange={handleChange}
+                            value={form?.email || ''}
                             name={'email'}
                             placeholder="Укажите e-mail"
                             extraClass="mb-2"

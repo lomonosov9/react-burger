@@ -1,17 +1,18 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { constructorActionCreator } from '../../../services/action-creators';
-import { fillingSelector} from '../../../services/selectors';
+import { fillingSelector } from '../../../services/selectors';
 import FillingItemWrapper from "./filling-item-wrapper/filling-item-wrapper";
+import { TIngredient } from "../../../utils/types";
 
-const FillingList = () => {
- 
+const FillingList: React.FC = () => {
+
     const dispatch = useDispatch();
-    const filling = useSelector(fillingSelector);
-    
+    const filling = useSelector(fillingSelector) as (TIngredient & { dragId: string })[];
+
     // Коллбэк, в котором ингредиенты меняются местами,
     // если один накладывается на другой
-    const moveCard = useCallback((dragIndex, hoverIndex) => {
+    const moveCard = useCallback((dragIndex: number, hoverIndex: number): void => {
         // Получаем перетаскиваемый ингредиент
         const dragCard = filling[dragIndex];
         const newCards = [...filling];
@@ -26,13 +27,17 @@ const FillingList = () => {
         // Но для лучше понимания обновления массива,
         // Советую использовать стандартный splice
 
-        dispatch(constructorActionCreator.updateFillingList(newCards))
+        dispatch<any>(constructorActionCreator.updateFillingList(newCards))
     }, [filling, dispatch]);
 
     return (
-        filling.map((item, index) => (
-            <FillingItemWrapper key={item.dragId} index={index} item={item} moveCard={moveCard} />
-        ))
+        <>
+            {
+                filling.map((item, index) => (
+                    <FillingItemWrapper key={item.dragId} index={index} item={item} moveCard={moveCard} />
+                ))
+            }
+        </>
     )
 }
 

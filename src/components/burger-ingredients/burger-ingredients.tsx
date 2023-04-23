@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef, useEffect, RefObject } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './burger-ingredients.module.css';
 import BurgerItem from './burger-item/burger-item';
@@ -7,55 +7,53 @@ import classNames from 'classnames';
 import { ingredientsSelector } from '../../services/selectors';
 import { bunSelector, fillingSelector } from '../../services/selectors';
 import { currentActionCreator } from '../../services/action-creators';
-
-
+import { TIngredient, TIngredientType } from '../../utils/types';
 
 function BurgerIngredients() {
   const dispatch = useDispatch();
   const [currentType, setCurrentType] = React.useState('bun');
-  const ingredientsContainerRef = useRef(null);
+  const ingredientsContainerRef = useRef<HTMLDivElement>(null);
 
   const headingClassName = classNames('mt-10 mb-5 text text_type_main-large');
   const titleClassName = classNames(styles.heading2, 'mt-4 text text_type_main-medium');
   const tabsClassName = classNames(styles.tabs, 'mb-6');
 
-  const data = useSelector(ingredientsSelector);
-  const constructorBun = useSelector(bunSelector);
-  const constructorfilling = useSelector(fillingSelector);
+  const data = useSelector<any>(ingredientsSelector) as TIngredient[];
+  const constructorBun = useSelector<any>(bunSelector) as TIngredient;
+  const constructorfilling = useSelector<any>(fillingSelector) as TIngredient[];
 
-  const ingredientTypesList = useMemo(() => ([
+  const ingredientTypesList = useMemo((): { code: TIngredientType, title: string }[] => ([
     { code: "bun", title: "Булки" },
     { code: "sauce", title: "Соусы" },
     { code: "main", title: "Начинки" }
   ]), []);
 
 
-  const typesListRefs = new Map();
-  typesListRefs.set('bun', useRef(null));
-  typesListRefs.set('sauce', useRef(null));
-  typesListRefs.set('main', useRef(null));
-
+  const typesListRefs = new Map<TIngredientType, RefObject<HTMLSpanElement>>();
+  typesListRefs.set('bun', useRef<HTMLSpanElement>(null));
+  typesListRefs.set('sauce', useRef<HTMLSpanElement>(null));
+  typesListRefs.set('main', useRef<HTMLSpanElement>(null));
 
   const ingredientsByType = useMemo(() => {
-    const itemsByType = new Map();
+    const itemsByType = new Map<TIngredientType, TIngredient[]>();
     for (const type of ingredientTypesList) {
       itemsByType.set(
         type.code,
-        data.filter(item => (item.type === type.code))
+        data.filter((elem) => (elem.type === type.code))
       );
     }
     return itemsByType;
   }, [ingredientTypesList, data]);
 
 
-  const handleOpenModal = (item) => {
-    dispatch(currentActionCreator.setCurrentIngridient(item));
+  const handleOpenModal = (item: TIngredient): void => {
+    dispatch<any>(currentActionCreator.setCurrentIngridient(item));
   }
 
-  const getIngredientsByType = (typeCode) => (
-    ingredientsByType
-      .get(typeCode)
-      .map(item => {
+  const getIngredientsByType = (typeCode: TIngredientType) => (
+    ingredientsByType?.
+      get(typeCode)?.
+      map(item => {
         let count = 0;
         if (typeCode === 'bun') {
           count = constructorBun?._id === item._id ? 1 : 0;
@@ -76,8 +74,8 @@ function BurgerIngredients() {
 
   useEffect(() => {
 
-    const typeTitleInViewport = {};
-    const callback = (entries) => {
+    const typeTitleInViewport: { [key: string]: boolean } = {};
+    const callback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         typeTitleInViewport[entry.target.id] = entry.isIntersecting;
       })
@@ -94,7 +92,11 @@ function BurgerIngredients() {
       threshold: 0
     };
     const observer = new IntersectionObserver(callback, options);
-    typesListRefs.forEach((typeTitle) => observer.observe(typeTitle.current));
+    typesListRefs.forEach((typeTitle) => {
+      if (typeTitle?.current) {
+        observer.observe(typeTitle?.current)
+      }
+    });
 
   });
 
@@ -105,7 +107,7 @@ function BurgerIngredients() {
       <div className={tabsClassName}>
         {
           ingredientTypesList.map(type => (
-            <Tab value={type.code} active={currentType === type.code} key={type.code}>
+            <Tab value={type.code} active={currentType === type.code} key={type.code} onClick={() => { }}>
               {type.title}
             </Tab>
           ))

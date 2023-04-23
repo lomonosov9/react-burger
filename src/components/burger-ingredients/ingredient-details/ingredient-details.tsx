@@ -1,22 +1,34 @@
 import styles from './ingredient-details.module.css';
 import classNames from 'classnames';
-import ingredientType from '../../../utils/prop-types';
-import { currentIngridientSelector } from '../../../services/selectors';
-import { useSelector } from 'react-redux';
+import { currentIngridientSelector, ingredientsSelector } from '../../../services/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { TIngredient } from '../../../utils/types';
+import { useEffect } from 'react';
+import { currentActionCreator } from '../../../services/action-creators';
 
 
-const IngredientDetails = () => {
-    const currentItem = useSelector(currentIngridientSelector);
-
+const IngredientDetails: React.FC = () => {
     const itemClassName = classNames(styles.item);
     const itemImgClassName = classNames(styles.itemImg);
     const itemNameClassName = classNames(styles.itemName, 'text text_type_main-medium');
     const itemNutritionalClassName = classNames(styles.itemNutritional, 'mt-4 text');
     const nutritionTitle = classNames('text text_type_main-default text_color_inactive pb-3');
     const nutritionValue = classNames('text text_type_digits-default text_color_inactive');
+    
+    const currentItem = useSelector(currentIngridientSelector);
+    const { ingredientId } = useParams();
+    const data = useSelector(ingredientsSelector) as TIngredient[];
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (!currentItem) {
+            dispatch<any>(currentActionCreator.setCurrentIngridient(
+                data.find(element => element._id === ingredientId)));
+        }
+    }, [data, ingredientId, dispatch]);
 
-
-    return (
+    return (<>
+        {currentItem &&
             <article className={itemClassName} >
                 <img
                     alt=''
@@ -45,11 +57,9 @@ const IngredientDetails = () => {
                         <p className={nutritionValue}> {currentItem.carbohydrates}</p>
                     </li>
                 </ul>
-
             </article>
+        }
+    </>
     );
 }
-
-IngredientDetails.propTypes = { ingredientType };
-
 export default IngredientDetails;

@@ -4,7 +4,7 @@ import { userRequestSelector, userFailedSelector, userErrorSelector } from '../.
 import { logoutUserData } from "../../../services/thunks";
 import styles from './profile-logout.module.css';
 
-const ProfileLogout = () => {
+const ProfileLogout: React.FC = () => {
 
     const isLoading = useSelector(userRequestSelector);
     const hasError = useSelector(userFailedSelector);
@@ -12,7 +12,7 @@ const ProfileLogout = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(logoutUserData());
+        dispatch<any>(logoutUserData());
     }, [dispatch]);
 
 

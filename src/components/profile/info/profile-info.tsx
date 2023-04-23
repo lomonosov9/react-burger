@@ -8,7 +8,7 @@ import {
 } from '../../../services/selectors';
 import { updateUserData } from "../../../services/thunks";
 
-const ProfileInfo = () => {
+const ProfileInfo: React.FC = () => {
 
     const [form, setForm] = useState({ name: '', email: '', password: '' });
 
@@ -18,12 +18,12 @@ const ProfileInfo = () => {
     const user = useSelector(userSelector);
     const dispatch = useDispatch();
 
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(updateUserData(form));
+        dispatch<any>(updateUserData(form));
     }
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-export const ROUTES = {
+export const ROUTES: {[key: string]: string} = {
     CONSTRUCTOR: '/',
     INGREDIENT: '/ingredients/:ingredientId',
     ORDER: '/profile/orders/:orderNumber',
@@ -9,9 +9,12 @@ export const ROUTES = {
     PROFILE: '/profile',
     PROFILE_ORDERS: '/profile/orders',
     PROFILE_LOGOUT: '/profile/logout'
-}
+} as const;
 
-export const routeReplacePathParams = (path, pathParams = {}) => {
+type TROUTES = typeof ROUTES[keyof typeof ROUTES];
+
+
+export const routeReplacePathParams = (path: TROUTES, pathParams:{[key: string] : any} = {}) => {
     let pathFinal = path;
     for (let param in pathParams) {
         pathFinal = pathFinal.replace(`:${param}`, pathParams[param]);

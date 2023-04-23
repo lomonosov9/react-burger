@@ -7,7 +7,7 @@ import {ROUTES} from '../../utils/routes'
 
 import styles from './AppHeader.module.css';
 
-function AppHeader() {
+const AppHeader: React.FC = () => {
   return (
     <header className={`${styles.header} mt-10 mr-10 ml-10 p-4`}>
       <div className={styles.wrapper}>
@@ -47,7 +47,7 @@ function AppHeader() {
           </div>
         </nav>
 
-        <Link to='/' ><Logo className={styles.logo} /></Link>
+        <Link to='/' ><span className={styles.logo}><Logo /></span></Link>
 
         <div className={styles.profile}  >
           <div className={`pt-4 pr-5 pb-4 pl-5`}>

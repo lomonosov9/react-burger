@@ -1,15 +1,19 @@
 import { useDrag } from "react-dnd";
+import { TIngredient } from "../../../utils/types";
 import styles from './burger-item.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientType from '../../../utils/prop-types';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { Link, useLocation } from "react-router-dom";
 import { routeReplacePathParams, ROUTES } from "../../../utils/routes";
 
+type BurgerItemProps = {
+  item: TIngredient;
+  count: number;
+  handleClick(item: TIngredient) :void;
+}
 
-function BurgerItem({ item, count, handleClick }) {
+const BurgerItem: React.FC<BurgerItemProps> = ({ item, count, handleClick }) => {
   const { _id, name, price, image } = item;
   const itemClassName = classNames(styles.item, 'ml-4 mt-6 mr-2 mb-4');
   const itemImgClassName = classNames(styles.itemImg, 'ml-4 mr-4');
@@ -60,7 +64,7 @@ function BurgerItem({ item, count, handleClick }) {
           className={itemImgClassName}
         />
 
-        {count > 0 && <Counter count={count} size="default" extraClass="" />}
+        {count > 0  && <Counter count={count} size="default" extraClass="" />}
 
         <span className={itemPriceClassName}><span className='pr-2'>
           {price}
@@ -72,12 +76,5 @@ function BurgerItem({ item, count, handleClick }) {
     </Link>
   );
 }
-
-BurgerItem.propTypes = {
-  ingredientType,
-  count: PropTypes.number,
-  handleClick: PropTypes.func
-};
-
 
 export default BurgerItem;

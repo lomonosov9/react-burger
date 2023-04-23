@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
+import type { Identifier } from 'dnd-core';
 import uuid from 'react-uuid';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -13,8 +14,13 @@ import { constructorActionCreator } from '../../services/action-creators';
 import FillingList from './filling-list/filling-list';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { routeReplacePathParams, ROUTES } from '../../utils/routes';
+import { TIngredient } from '../../utils/types';
 
-
+type TDragItem = {
+  index: number
+  id: string
+  type: string
+};
 
 function BurgerConstructor() {
 
@@ -23,8 +29,8 @@ function BurgerConstructor() {
   const componentsInfoClassName = classNames(styles.componentsInfo, 'ml-4 mt-10 mr-4');
 
   const dispatch = useDispatch();
-  const filling = useSelector(fillingSelector);
-  const order = useSelector(orderSelector);
+  const filling = useSelector(fillingSelector) as TIngredient[];
+  const order = useSelector(orderSelector) as {name: string, number: number};
   const hasError = useSelector(orderFailedSelector);
   const isLoading = useSelector(orderRequestSelector);
   const bun = useSelector(bunSelector);
@@ -35,7 +41,7 @@ function BurgerConstructor() {
 
   const dispatchOrderInfo = React.useCallback(async () => {
     const componentsIds = [bun._id, ...filling.map(item => item._id), bun._id];
-    dispatch(getOrderInfo(componentsIds));
+    dispatch<any>(getOrderInfo(componentsIds));
 
   }, [bun, filling, dispatch]);
 
@@ -60,7 +66,7 @@ function BurgerConstructor() {
   // drop
   // Получаем реф, который мы пробросим в наш контейнер
   // чтобы библиотека могла манипулировать его состоянием
-  const [{ isHover }, dropTargerRef] = useDrop({
+  const [{ isHover }, dropTargerRef] = useDrop<TDragItem, void, { isHover: boolean }>({
     accept: 'ingredient',
     collect: monitor => ({
       isHover: monitor.isOver()
