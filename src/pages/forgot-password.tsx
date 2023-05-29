@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link } from 'react-router-dom'
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -23,7 +23,7 @@ const ForgotPasswordPage = () => {
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch<any>(passwordRecoverData(form));
+        dispatch(passwordRecoverData(form));
     }
 
     return (

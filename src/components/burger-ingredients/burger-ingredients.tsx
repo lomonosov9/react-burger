@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useEffect, RefObject } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import styles from './burger-ingredients.module.css';
 import BurgerItem from './burger-item/burger-item';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { ingredientsSelector } from '../../services/selectors';
 import { bunSelector, fillingSelector } from '../../services/selectors';
 import { currentActionCreator } from '../../services/action-creators';
-import { TIngredient, TIngredientType } from '../../utils/types';
+import { TComponent, TIngredient, TIngredientType } from '../../services/types/data';
 
 function BurgerIngredients() {
   const dispatch = useDispatch();
@@ -18,9 +18,9 @@ function BurgerIngredients() {
   const titleClassName = classNames(styles.heading2, 'mt-4 text text_type_main-medium');
   const tabsClassName = classNames(styles.tabs, 'mb-6');
 
-  const data = useSelector<any>(ingredientsSelector) as TIngredient[];
-  const constructorBun = useSelector<any>(bunSelector) as TIngredient;
-  const constructorfilling = useSelector<any>(fillingSelector) as TIngredient[];
+  const data = useSelector(ingredientsSelector) as TIngredient[];
+  const constructorBun = useSelector(bunSelector) as TComponent;
+  const constructorfilling = useSelector(fillingSelector) as TComponent[];
 
   const ingredientTypesList = useMemo((): { code: TIngredientType, title: string }[] => ([
     { code: "bun", title: "Булки" },
@@ -47,7 +47,7 @@ function BurgerIngredients() {
 
 
   const handleOpenModal = (item: TIngredient): void => {
-    dispatch<any>(currentActionCreator.setCurrentIngridient(item));
+    dispatch(currentActionCreator.setCurrentIngridient(item));
   }
 
   const getIngredientsByType = (typeCode: TIngredientType) => (

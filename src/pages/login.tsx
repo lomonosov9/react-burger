@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link } from 'react-router-dom';
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userRequestSelector, userFailedSelector, userErrorSelector } from '../services/selectors';
@@ -19,7 +19,7 @@ const LoginPage = () => {
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch<any>(loginUserData(form));
+        dispatch(loginUserData(form));
     }
 
     return (

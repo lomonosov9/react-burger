@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './order-details.module.css';
 import checkedImgPath from '../../../images/checked-gradient.svg'
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../services/hooks';
 import { orderSelector } from '../../../services/selectors';
 
 const OrderDetails: React.FC = () => {
@@ -11,7 +11,7 @@ const OrderDetails: React.FC = () => {
             {order?.number > 0 &&
                 <article className={styles.order} >
                     <p className='text text_type_digits-large mb-8'>
-                        {order?.number}
+                        {order.number.toString().padStart(6, '0')}
                     </p>
                     <p className='text text_type_main-medium'>идентификатор заказа</p>
                     <div className='mt-15 mb-15 pb-2' style={{ height: 120 }}>

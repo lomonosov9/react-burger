@@ -4,8 +4,8 @@ import styles from './profile.module.css';
 
 const ProfilePage = () => {
     return (
-        <section className={`${styles.wrapper} mt-25`}>
-            <div className={styles.navigation}>
+        <section className={`${styles.wrapper}`}>
+            <div className={`${styles.navigation} mt-25`}>
                 <NavLink end
                     to={ROUTES.PROFILE} 
                     className={({ isActive, isPending }) =>

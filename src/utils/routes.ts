@@ -1,13 +1,15 @@
 export const ROUTES: {[key: string]: string} = {
     CONSTRUCTOR: '/',
+    FEED: '/feed',
+    FEED_ORDER: '/feed/:orderNumber',
     INGREDIENT: '/ingredients/:ingredientId',
-    ORDER: '/profile/orders/:orderNumber',
     LOGIN: '/login',
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
     PROFILE: '/profile',
     PROFILE_ORDERS: '/profile/orders',
+    PROFILE_FEED_ORDER: '/profile/orders/:orderNumber',
     PROFILE_LOGOUT: '/profile/logout'
 } as const;
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { useDrop } from "react-dnd";
 import type { Identifier } from 'dnd-core';
 import uuid from 'react-uuid';
@@ -10,17 +10,14 @@ import classNames from 'classnames';
 import { orderSelector, orderRequestSelector, orderFailedSelector, isAuthorizedSelector } from '../../services/selectors';
 import { bunSelector, fillingSelector, costSelector } from '../../services/selectors';
 import { getOrderInfo } from '../../services/thunks';
-import { constructorActionCreator } from '../../services/action-creators';
+import { constructorActionCreator, orderActionCreator } from '../../services/action-creators';
 import FillingList from './filling-list/filling-list';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { routeReplacePathParams, ROUTES } from '../../utils/routes';
-import { TIngredient } from '../../utils/types';
+import { TComponent, TIngredient } from '../../services/types/data';
+import Modal from '../modal/modal';
+import OrderDetails from './order-details/order-details';
 
-type TDragItem = {
-  index: number
-  id: string
-  type: string
-};
 
 function BurgerConstructor() {
 
@@ -29,8 +26,8 @@ function BurgerConstructor() {
   const componentsInfoClassName = classNames(styles.componentsInfo, 'ml-4 mt-10 mr-4');
 
   const dispatch = useDispatch();
-  const filling = useSelector(fillingSelector) as TIngredient[];
-  const order = useSelector(orderSelector) as {name: string, number: number};
+  const filling = useSelector(fillingSelector) as TComponent[];
+  const order = useSelector(orderSelector) as { name: string, number: number };
   const hasError = useSelector(orderFailedSelector);
   const isLoading = useSelector(orderRequestSelector);
   const bun = useSelector(bunSelector);
@@ -40,8 +37,10 @@ function BurgerConstructor() {
   const isAuthorized = useSelector(isAuthorizedSelector);
 
   const dispatchOrderInfo = React.useCallback(async () => {
-    const componentsIds = [bun._id, ...filling.map(item => item._id), bun._id];
-    dispatch<any>(getOrderInfo(componentsIds));
+    if (bun?._id) {
+      const componentsIds = [bun?._id, ...filling.map(item => item._id), bun?._id];
+      dispatch(getOrderInfo(componentsIds));
+    }
 
   }, [bun, filling, dispatch]);
 
@@ -54,19 +53,10 @@ function BurgerConstructor() {
     }
   }
 
-
-  useEffect(() => {
-    if (order?.number > 0) {
-      const orderLink = routeReplacePathParams(ROUTES.ORDER, {orderNumber: order.number});
-      navigate(orderLink, { state: { background: location } })
-    }
-    // eslint-disable-next-line
-  }, [order]);
-
   // drop
   // Получаем реф, который мы пробросим в наш контейнер
   // чтобы библиотека могла манипулировать его состоянием
-  const [{ isHover }, dropTargerRef] = useDrop<TDragItem, void, { isHover: boolean }>({
+  const [{ isHover }, dropTargerRef] = useDrop<TIngredient, void, { isHover: boolean }>({
     accept: 'ingredient',
     collect: monitor => ({
       isHover: monitor.isOver()
@@ -84,12 +74,23 @@ function BurgerConstructor() {
     }
   });
 
+  const handleCLosOrderModal = () => {
+    dispatch(orderActionCreator.resetOrder());
+    dispatch(constructorActionCreator.resetComponents());
+  }
+
   return (
     <section className={sectionClassName} ref={dropTargerRef} /* className={`${isHover ? styles.onHover : ''}`}*/ >
       {isLoading &&
         <div>
           <p className="text text_type_main-default">Ожидайте, ваш заказ оформляется... </p>
         </div>
+      }
+      {
+        order && order?.number > 0 &&
+        <Modal isOpen={order?.number > 0 ? true : false} onClose={handleCLosOrderModal} header={''}>
+            <OrderDetails />
+        </Modal>
       }
       {
         <>

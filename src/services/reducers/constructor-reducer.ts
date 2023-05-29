@@ -1,0 +1,65 @@
+import { TComponent } from "../types/data";
+import { TConstructorActions } from "../action-creators";
+import { 
+    ADD_COMPONENT, 
+    DELETE_COMPONENT, 
+    RESET_COMPONENTS, 
+    UPDATE_FILLING_LIST 
+} from "../action-types";
+
+export type TConstructorState = {
+    bun: TComponent | null;
+    filling: ReadonlyArray<TComponent>;
+    cost: number;
+}
+
+export const initialConstructorState: TConstructorState = {
+    bun: null,
+    filling: [],
+    cost: 0
+}
+
+export const constructor = (state = initialConstructorState, action: TConstructorActions) => {
+    switch (action.type) {
+        case ADD_COMPONENT: {
+            if (action.data.type === 'bun') {
+                return {
+                    ...state,
+                    bun: action.data,
+                    cost: action.data.price * 2 + state.filling?.reduce((acc, obj) => acc + obj.price, 0)
+                }
+            }
+            else {
+                return {
+                    ...state,
+                    filling: [
+                        ...state.filling,
+                        action.data
+                    ],
+                    cost: (state.bun ? state.bun.price : 0) * 2 + state.filling?.reduce((acc, obj) => acc + obj.price, 0) + action.data.price
+                }
+            }
+        }
+        case DELETE_COMPONENT: {
+            return {
+                ...state,
+                filling: [...state.filling.filter(item => item.dragId !== action.id)],
+                cost: Number(state.bun?.price)  * 2 + state.filling.filter(item => item.dragId !== action.id)?.reduce((acc, obj) => acc + obj.price, 0)
+            }
+        }
+        case UPDATE_FILLING_LIST: {
+            return {
+                ...state,
+                filling: [
+                    ...action.data
+                ]
+            }
+        }
+        case RESET_COMPONENTS: {
+            return initialConstructorState;
+        }
+        default: {
+            return state;
+        }
+    }
+}

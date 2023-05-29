@@ -1,4 +1,4 @@
-import { TUserForm } from "../utils/types";
+import { TUserForm } from "../services/types/data";
 import {useState} from 'react';
 
 export function useForm(inputValues: TUserForm) {

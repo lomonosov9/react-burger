@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector } from '../services/hooks';
 import { useLocation, Navigate } from "react-router-dom";
 import { isAuthorizedSelector} from '../services/selectors';
 import { ROUTES } from "../utils/routes";

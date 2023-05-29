@@ -1,5 +1,5 @@
 import { useDrag } from "react-dnd";
-import { TIngredient } from "../../../utils/types";
+import { TIngredient } from "../../../services/types/data";
 import styles from './burger-item.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';

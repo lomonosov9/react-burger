@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link } from 'react-router-dom'
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userRequestSelector, userFailedSelector, isAuthorizedSelector, userErrorSelector } from '../services/selectors';
@@ -21,7 +21,7 @@ const RegisterPage = () => {
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch<any>(registerUserData(form));
+        dispatch(registerUserData(form));
     }
 
     return (
