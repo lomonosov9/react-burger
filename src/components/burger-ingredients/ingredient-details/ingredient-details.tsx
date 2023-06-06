@@ -1,9 +1,9 @@
 import styles from './ingredient-details.module.css';
 import classNames from 'classnames';
 import { currentIngridientSelector, ingredientsSelector } from '../../../services/selectors';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../../services/hooks';
 import { useParams } from 'react-router-dom';
-import { TIngredient } from '../../../utils/types';
+import { TIngredient } from '../../../services/types/data';
 import { useEffect } from 'react';
 import { currentActionCreator } from '../../../services/action-creators';
 
@@ -22,8 +22,8 @@ const IngredientDetails: React.FC = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         if (!currentItem) {
-            dispatch<any>(currentActionCreator.setCurrentIngridient(
-                data.find(element => element._id === ingredientId)));
+            dispatch(currentActionCreator.setCurrentIngridient(
+                data.find(element => element._id === ingredientId) as TIngredient));
         }
     }, [data, ingredientId, dispatch]);
 

@@ -30,7 +30,6 @@ const Modal = ({ children, header, onClose, isOpen }: PropsWithChildren<ModalPro
         });
     }, [isOpen, onClose]);
 
-    //if (!isOpen) return (<></>);
     return ReactDOM.createPortal(
         (
             <div className={modalWrapperClassName}>

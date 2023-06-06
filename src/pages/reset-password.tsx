@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from 'react-router-dom'
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import {
     passwordResetRequestSelector, passwordResetSuccessSelector,
     passwordResetFailedSelector, passwordResetErrorSelector,
@@ -25,7 +25,7 @@ const ResetPasswordPage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch<any>(passwordResetData(form));
+        dispatch(passwordResetData(form));
     }
 
     return (

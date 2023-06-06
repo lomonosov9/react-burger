@@ -1,0 +1,38 @@
+.card{
+    /*border: 2px dashed #4C4CFF;*/
+    /*width: 100%;*/
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--offset-base-size)  * 6);
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-radius: 40px;
+    padding: calc(var(--offset-base-size)  * 6);
+    background-color: var(--background);
+    margin-right: calc(var(--offset-base-size)  * 2);
+}
+
+.twoColumns{
+    /*border: 1px dashed #4C4CFF;*/
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-items: flex-start;
+    column-gap: calc(var(--offset-base-size)  * 6);
+    align-items: center;
+    width: 100%;
+}
+.title{
+    text-align: left;
+}
+.price{
+    display: flex;
+    align-items: center;
+}
+.status{
+    margin-top: -16px;
+}
+
+.link{
+    text-decoration: none;
+    color: var(--text-primary-color);
+}

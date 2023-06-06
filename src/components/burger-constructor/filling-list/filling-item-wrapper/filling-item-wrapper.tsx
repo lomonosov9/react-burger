@@ -2,7 +2,7 @@ import React from 'react';
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from 'dnd-core';
 import FillingItem from "../filling-item/filling-item";
-import { TIngredient } from '../../../../utils/types';
+import { TIngredient } from '../../../../services/types/data';
 
 type FillingItemWrapperProps = {
     item: TIngredient & { dragId: string };

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../../services/hooks';
 import { userRequestSelector, userFailedSelector, userErrorSelector } from '../../../services/selectors';
 import { logoutUserData } from "../../../services/thunks";
 import styles from './profile-logout.module.css';
@@ -12,7 +12,7 @@ const ProfileLogout: React.FC = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch<any>(logoutUserData());
+        dispatch(logoutUserData());
     }, [dispatch]);
 
 

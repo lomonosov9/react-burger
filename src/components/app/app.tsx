@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from '../../services/hooks';
+import { Routes, Route, useLocation, useNavigate, useParams, useNavigationType, NavigationType } from 'react-router-dom';
 
 import AppHeader from '../app-header/AppHeader';
 import { getIngredientsData, checkUserAuth } from "../../services/thunks";
@@ -23,43 +23,50 @@ import ProfileInfo from '../profile/info/profile-info';
 import ProfileOrders from '../profile/orders/profile-orders';
 import ProfileLogout from '../profile/logout/profile-logout';
 import { ROUTES } from '../../utils/routes';
+import OrderFeedPage from '../../pages/order-feed';
+import OrderInfoPage from '../../pages/order-info';
+import OrderInfo from '../orders/order-info/order-info';
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     // Отправляем экшен-функцию
-    dispatch<any>(getIngredientsData());
-    dispatch<any>(checkUserAuth());
+    dispatch(getIngredientsData());
+    dispatch(checkUserAuth());
     // eslint-disable-next-line
   }, []);
 
   const ModalRouter: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    let background = location.state && location.state.background;
-
+    const navigationType = useNavigationType();
+    
+    const background = location.state && location.state.background;
+    //если через Link state переданы какие-то данные
+    const payload = location.state && location.state.payload;
+    
     const handleCLoseIngredientsModal = () => {
       dispatch(currentActionCreator.resetCurrentIngridient());
       navigate(-1);
     };
 
-    const handleCLosOrderModal = () => {
-      dispatch(orderActionCreator.resetOrder());
-      dispatch(constructorActionCreator.resetComponents());
+    const handleCLoseOrderInfoModal = () => {
       navigate(-1);
-    }
+    };
 
     const currentIngredient = useSelector(currentIngridientSelector);
-    const order = useSelector(orderSelector);
+
 
     return (
-      <>
+      <div className={styles.page}>
         <AppHeader />
         <main className={styles.main}>
           <div className={styles.wrapper}>
 
             <Routes location={background || location}>
               <Route path={ROUTES.CONSTRUCTOR} element={<Main />} />
+              <Route path={ROUTES.FEED} element={<OrderFeedPage />} />
+              <Route path={ROUTES.FEED_ORDER} element={<OrderInfoPage />} />
               <Route path={ROUTES.LOGIN} element={
                 <ProtectedRouteElement onlyUnAuth element={<LoginPage />} />
               } />
@@ -76,17 +83,18 @@ const App = () => {
               <Route path={ROUTES.PROFILE} element={
                 <ProtectedRouteElement element={<ProfilePage />} />
               }>
-                  <Route path={ROUTES.PROFILE}        element={<ProfileInfo />} />
-                  <Route path={ROUTES.PROFILE_LOGOUT} element={<ProfileLogout />} />
-                  <Route path={ROUTES.PROFILE_ORDERS} element={<ProfileOrders />} />
-                  
-                </Route>
+                <Route path={ROUTES.PROFILE} element={<ProfileInfo />} />
+                <Route path={ROUTES.PROFILE_LOGOUT} element={<ProfileLogout />} />
+                <Route path={ROUTES.PROFILE_ORDERS} element={<ProfileOrders />} />
+                <Route path={ROUTES.PROFILE_FEED_ORDER} element={<OrderInfoPage />} />
+
+              </Route>
 
               <Route path={ROUTES.INGREDIENT} element={<IngredientsDetailsPage />} />
               <Route path="*" element={<NotFound404 />} />
             </Routes>
 
-            {background && (
+            {background && navigationType === NavigationType.Push && (
               <Routes>
                 <Route path={ROUTES.INGREDIENT}
                   element={
@@ -95,20 +103,25 @@ const App = () => {
                     </Modal>
                   }
                 />
-                <Route path={ROUTES.ORDER}
+                <Route path={ROUTES.FEED_ORDER}
                   element={
-                    <ProtectedRouteElement element={
-                      <Modal isOpen={order?.number > 0 ? true : false} onClose={handleCLosOrderModal} header={''}>
-                        <OrderDetails />
-                      </Modal>
-                    } />
-                  } />
+                    <Modal isOpen={true} header={payload?.toString()} onClose={handleCLoseOrderInfoModal}>
+                      <OrderInfo />
+                    </Modal>
+                  }
+                />
+                <Route path={ROUTES.PROFILE_FEED_ORDER}
+                  element={
+                    <Modal isOpen={true} header={payload?.toString()} onClose={handleCLoseOrderInfoModal}>
+                      <OrderInfo />
+                    </Modal>
+                  }
+                />
               </Routes>
             )}
-
           </div>
         </main>
-      </>
+      </div>
     );
   }
 

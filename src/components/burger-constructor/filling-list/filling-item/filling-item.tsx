@@ -1,9 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../../../../services/hooks';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { constructorActionCreator } from '../../../../services/action-creators';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './filling-item.module.css';
-import { TIngredient } from '../../../../utils/types';
+import { TIngredient } from '../../../../services/types/data';
 
 import classNames from 'classnames';
 

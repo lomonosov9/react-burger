@@ -1,7 +1,21 @@
 import { setCookie, getCookie, deleteCookie } from "./cookies";
-import { RequestCredentialsUpdate, RequestDB, RequestDataToken, RequestIngredients, RequestLogout, RequestOrder, RequestUser, RequestUserAuth, TUserForm } from "./types";
+import { RequestCredentialsUpdate, RequestDB, RequestDataToken, RequestIngredients, RequestLogout, RequestOrder, RequestOrderInfo, RequestUser, RequestUserAuth, TUserForm } from "../services/types/data";
 
 const NORMA_API = 'https://norma.nomoreparties.space/api/';
+const PROFILE_FEED_SERVER_URL = "wss://norma.nomoreparties.space/orders";
+const FEED_SERVER_URL = "wss://norma.nomoreparties.space/orders/all";
+
+export const getFeedUrl = () => {
+  return `${FEED_SERVER_URL}`;
+}
+
+export const getProfileFeedUrl = () => {
+  const authToken = getCookie('token');
+
+  return `${PROFILE_FEED_SERVER_URL}?token=${authToken}`;
+}
+
+
 
 export const saveTokens = (refreshToken: string, accessToken: string) => {
   const authToken = accessToken.split('Bearer ')[1];
@@ -14,7 +28,7 @@ export const deleteTokens = () => {
   localStorage.removeItem('refreshToken');
 }
 
-const checkResponse = <T>(res: Response): Promise<T>  => {
+const checkResponse = <T>(res: Response): Promise<T> => {
   if (res.ok) {
     return res.json() as Promise<T>;
   }
@@ -32,7 +46,7 @@ const checkSuccess = <T>(res: checkSuccessProps<T>): T | Promise<T> => {
 const request = <T>(endpoint: string, options?: RequestInit | undefined): Promise<T> => {
   return fetch(`${NORMA_API}${endpoint}`, options)
     .then(checkResponse<T>);
-    //.then(checkSuccess<T>);
+  //.then(checkSuccess<T>);
 };
 
 export const getIngredients = (): Promise<RequestIngredients> => request("ingredients");
@@ -46,6 +60,9 @@ export const getOrder = (data: string[]): Promise<RequestOrder> => request(`orde
     },
     body: JSON.stringify({ "ingredients": data })
   });
+
+export const getFeedOrder = (orderNumber: number): Promise<RequestOrderInfo> => request(`orders/${orderNumber}`);
+
 
 export const loginRequest = (form: TUserForm): Promise<RequestUserAuth> => request(`auth/login`, {
   method: 'POST',

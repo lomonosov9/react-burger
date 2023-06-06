@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile-info.module.css';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from '../../../services/hooks';
 import {
     userRequestSelector, userFailedSelector,
     userErrorSelector, userSelector
@@ -23,7 +23,7 @@ const ProfileInfo: React.FC = () => {
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch<any>(updateUserData(form));
+        dispatch(updateUserData(form));
     }
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const ProfileInfo: React.FC = () => {
     }
 
     return (
-        <div className={styles.form}>
+        <div className={`${styles.form} mt-25`} >
             {isLoading && <span className="text text_type_main-default">Загрузка...</span>}
             <form onSubmit={handleSubmit}>
                 <Input
