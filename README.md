@@ -1,19 +1,22 @@
-# \[React Burger\]
+# React Burger
 
-\[Build status badge\]
+Курсовая работа на профессии [React-разработчик](https://practicum.yandex.ru/react/) от Яндекс.Практикум.
 
-Курсовая работа на профессии [React-разработчик] (https://practicum.yandex.ru/react/) от Яндекс.Практикум.
+### Демо
+
+Приложение доступно по приведенным ниже ссылкам
+- [Yandex.Cloud](http://zyryanova.students.nomoredomains.rocks/)
 
 ## Технологии
 
 - [React](https://reactjs.org/) SPA (одностраничное React приложение)
-- Функциональные компоненты с [React Hooks] (https://ru.react.js.org/docs/hooks-reference.html)
+- Функциональные компоненты с [React Hooks](https://ru.react.js.org/docs/hooks-reference.html)
 - Маршрутизация [React Router v6](https://reactrouter.com/en/main)
 - Управление состоянием [Redux](https://redux.js.org/)
-- Статическая типизация [TypeScript] (https://www.typescriptlang.org/)
-- Протокол [WebSocket] (https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) для двусторонней связи с сервером 
-- Модульное тестирование [Jest] (https://jestjs.io/)
-- E2E тестирование [Cypress]
+- Статическая типизация [TypeScript](https://www.typescriptlang.org/)
+- Протокол [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) для двусторонней связи с сервером 
+- Модульное тестирование [Jest](https://jestjs.io/)
+- E2E тестирование [Cypress](https://www.cypress.io/)
 
 ## Установка
 
@@ -39,4 +42,4 @@ npm start
 ```bash
 npm run deploy
 ```
-Разворачивает приложение на сервере [Yandex.Cloud] (http://zyryanova.students.nomoredomains.rocks/)
+Разворачивает приложение на сервере [Yandex.Cloud](http://zyryanova.students.nomoredomains.rocks/)
