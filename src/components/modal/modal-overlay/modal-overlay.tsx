@@ -6,7 +6,7 @@ type ModalOverlayProps = {
 
 const ModalOverlay: React.FC<ModalOverlayProps> = ({onClose})=>{
     return (
-        <div className={styles.overlay} onClick = {onClose} />
+        <div className={styles.overlay} onClick = {onClose} data-test="modal-overlay"/>
     )
 }
 

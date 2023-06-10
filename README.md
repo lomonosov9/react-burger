@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# React Burger
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Курсовая работа на профессии [React-разработчик](https://practicum.yandex.ru/react/) от Яндекс.Практикум.
 
-## Available Scripts
+### Демо
 
-In the project directory, you can run:
+Приложение доступно по приведенным ниже ссылкам
+- [Yandex.Cloud](http://zyryanova.students.nomoredomains.rocks/)
 
-### `npm start`
+## Технологии
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [React](https://reactjs.org/) SPA (одностраничное React приложение)
+- Функциональные компоненты с [React Hooks](https://ru.react.js.org/docs/hooks-reference.html)
+- Маршрутизация [React Router v6](https://reactrouter.com/en/main)
+- Управление состоянием [Redux](https://redux.js.org/)
+- Статическая типизация [TypeScript](https://www.typescriptlang.org/)
+- Протокол [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) для двусторонней связи с сервером 
+- Модульное тестирование [Jest](https://jestjs.io/)
+- E2E тестирование [Cypress](https://www.cypress.io/)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Установка
 
-### `npm test`
+1. Клонировать репозиторий и установить все зависимости 
+```bash
+npm install
+```
+2. Запустить приложение локально
+```bash
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Доступные команды
 
-### `npm run build`
+* `npm start`: Запускает приложение локально в среде разработки, по умолчанию оно будет досупно по адресу http://localhost:3000.
+* `npm run build`: Собирает приложение для продакшена в папку 'build'
+* `npm test`: Запускает модульные тесты на Jest
+* `npm run cypress:open`: Запускает e2e тесты на Cypress
+* `npm run deploy`: Разворачивает приложение на выбранном удаленном сервере
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Развертывание
+```bash
+npm run deploy
+```
+Разворачивает приложение на сервере [Yandex.Cloud](http://zyryanova.students.nomoredomains.rocks/)

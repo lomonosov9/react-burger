@@ -14,7 +14,7 @@ type BurgerItemProps = {
 }
 
 const BurgerItem: React.FC<BurgerItemProps> = ({ item, count, handleClick }) => {
-  const { _id, name, price, image } = item;
+  const { _id, name, price, image, type: itemType } = item;
   const itemClassName = classNames(styles.item, 'ml-4 mt-6 mr-2 mb-4');
   const itemImgClassName = classNames(styles.itemImg, 'ml-4 mr-4');
   const itemPriceClassName = classNames(styles.itemPrice, 'text text_type_digits-default text_color_primary');
@@ -22,7 +22,7 @@ const BurgerItem: React.FC<BurgerItemProps> = ({ item, count, handleClick }) => 
 
   const location = useLocation();
   const ingredientId = _id;
-
+  
   // drag
   // Получаем реф для каждого элемента, который можно перетащить,
   // opacity - возвращается из функции collect
@@ -55,6 +55,7 @@ const BurgerItem: React.FC<BurgerItemProps> = ({ item, count, handleClick }) => 
       state={{ background: location }}
       className={styles.link}
       ref={dragRef}
+      data-test={itemType.toString()}
     >
 
       <article className={itemClassName} onClick={() => handleClick(item)} style={{ opacity }}>

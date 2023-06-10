@@ -25,6 +25,7 @@ export type TOrder = {
 export type TOrderInfo = {
   ingredients: string[];
   _id: string;
+  owner?: string;
   status: string;
   number: number;
   createdAt: string;

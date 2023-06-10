@@ -45,7 +45,7 @@ export const constructorActionCreator = {
         type: UPDATE_FILLING_LIST,
         data: payload
     })),
-    resetComponents: () => (({
+    resetComponents: (): TResetComponentsAction => (({
         type: RESET_COMPONENTS
     }))
 }
