@@ -16,7 +16,9 @@ const ModalHeader = ({ onClose, children }: PropsWithChildren<ModalHeaderProps>)
             <span className={titleClassName}>
                 {children}
             </span>
-            <CloseIcon type="primary" onClick={onClose} />
+            <span className={styles.iconWrapper} data-test='modal-close'>
+                <CloseIcon type="primary" onClick={onClose} />
+            </span>
         </div>
     )
 }

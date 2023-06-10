@@ -10,7 +10,7 @@ const OrderDetails: React.FC = () => {
         <>
             {order?.number > 0 &&
                 <article className={styles.order} >
-                    <p className='text text_type_digits-large mb-8'>
+                    <p className='text text_type_digits-large mb-8' data-test="order-number">
                         {order.number.toString().padStart(6, '0')}
                     </p>
                     <p className='text text_type_main-medium'>идентификатор заказа</p>

@@ -80,7 +80,7 @@ function BurgerConstructor() {
   }
 
   return (
-    <section className={sectionClassName} ref={dropTargerRef} /* className={`${isHover ? styles.onHover : ''}`}*/ >
+    <section className={sectionClassName} ref={dropTargerRef} data-test="constructor" /* className={`${isHover ? styles.onHover : ''}`}*/ >
       {isLoading &&
         <div>
           <p className="text text_type_main-default">Ожидайте, ваш заказ оформляется... </p>
@@ -97,7 +97,7 @@ function BurgerConstructor() {
           {!isLoading &&
             <>
               {bun &&
-                <div className={componentClassName}>
+                <div className={componentClassName} data-test="bun-top">
                   <span style={{ width: 24 }} />
                   <ConstructorElement
                     type="top"
@@ -108,12 +108,12 @@ function BurgerConstructor() {
                   />
                 </div>
               }
-              <div className={`${styles.innerComponentsList} custom-scroll`}>
+              <div className={`${styles.innerComponentsList} custom-scroll`} data-test="filling-container">
                 <FillingList />
               </div>
 
               {bun &&
-                <div className={componentClassName}>
+                <div className={componentClassName} data-test="bun-bottom">
                   <span style={{ width: 24 }} />
                   <ConstructorElement
                     type="bottom"
@@ -136,7 +136,7 @@ function BurgerConstructor() {
               <CurrencyIcon type="primary" />
             </span>
 
-            <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal} disabled={(!bun || isLoading) ? true : false}>Оформить заказ</Button>
+            <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal} disabled={(!bun || isLoading) ? true : false} data-test="order-button">Оформить заказ</Button>
           </div>
 
           {hasError &&

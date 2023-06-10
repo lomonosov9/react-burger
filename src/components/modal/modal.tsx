@@ -33,7 +33,7 @@ const Modal = ({ children, header, onClose, isOpen }: PropsWithChildren<ModalPro
     return ReactDOM.createPortal(
         (
             <div className={modalWrapperClassName}>
-                <div className={modalClassName}>
+                <div className={modalClassName} data-test="modal">
                     <ModalHeader onClose={onClose}>{header}</ModalHeader>
                     {children}
                 </div>

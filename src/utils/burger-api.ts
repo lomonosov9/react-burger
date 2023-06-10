@@ -1,7 +1,7 @@
 import { setCookie, getCookie, deleteCookie } from "./cookies";
 import { RequestCredentialsUpdate, RequestDB, RequestDataToken, RequestIngredients, RequestLogout, RequestOrder, RequestOrderInfo, RequestUser, RequestUserAuth, TUserForm } from "../services/types/data";
 
-const NORMA_API = 'https://norma.nomoreparties.space/api/';
+export const NORMA_API = 'https://norma.nomoreparties.space/api/';
 const PROFILE_FEED_SERVER_URL = "wss://norma.nomoreparties.space/orders";
 const FEED_SERVER_URL = "wss://norma.nomoreparties.space/orders/all";
 
