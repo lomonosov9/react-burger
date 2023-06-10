@@ -19,7 +19,7 @@ export const initialConstructorState: TConstructorState = {
     cost: 0
 }
 
-export const getBunCost = (item: TComponent | null) => Number(item?.price) * 2;
+export const getBunCost = (item: TComponent | null) => Number(item?.price || 0) * 2;
 export const getFillingCost = (items: TComponent[]) => items?.reduce((acc, obj) => acc + obj.price, 0);
 export const getBurgerCost = (bun: TComponent | null, filling: TComponent[]) => getBunCost(bun) + getFillingCost(filling);
 
